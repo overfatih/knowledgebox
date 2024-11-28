@@ -51,6 +51,7 @@ android {
     }
 }
 
+val nav_version = "2.8.4"
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -69,6 +70,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(platform(libs.firebase.bom))
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }
