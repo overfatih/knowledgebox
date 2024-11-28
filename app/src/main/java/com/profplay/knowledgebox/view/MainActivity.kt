@@ -1,4 +1,4 @@
-package com.profplay.knowledgebox
+package com.profplay.knowledgebox.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -27,7 +27,7 @@ import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
 
 class MainActivity : ComponentActivity() {
 
-    internal lateinit var auth: FirebaseAuth
+    internal lateinit var myAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +40,8 @@ class MainActivity : ComponentActivity() {
                          BottomAppBar (
                             actions = {
                                 IconButton(onClick = { /* do something */
-                                    auth.signOut()
-                                    //ToDo: [error] when app is opened again, it return back MainActivity
+                                    myAuth = Firebase.auth
+                                    myAuth.signOut()
                                     navigateToLoginActivity()
                                 }) {
                                     Icon(
@@ -73,14 +73,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        auth = Firebase.auth
+
     }
 
     private fun navigateToLoginActivity() {
         // LoginActivity'ye geçiş yapmak için Intent kullanıyoruz
         val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        finish()
         startActivity(intent)
+        finish()
           // MainActivity'yi kapatıyoruz ki geri butonu ile tekrar açılmasın
     }
 }

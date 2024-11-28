@@ -19,15 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.profplay.knowledgebox.auth
+import com.profplay.knowledgebox.viewModel.LoginViewModel
 
 @Composable
 fun LoginScreen(onLoginSuccess: ()->Unit){
 
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    var isLoginEnabled = remember { mutableStateOf(false) }
-
+    /*
+    Todo: viewmodelı activityye dahil etmiş şimdilik burda dene sonra activityyer aktar.
+     örnek link
+        https://github.com/atilsamancioglu/ShoppingBookCompose/blob/main/app/src/main/java/com/atilsamancioglu/shoppingbook/MainActivity.kt
+        Bunu yazıyordun -> val viewModel : LoginViewModel by viewModels<LoginViewModel>()
+    */
     val context = LocalContext.current
 
     Box(modifier = Modifier
@@ -57,11 +61,13 @@ fun LoginScreen(onLoginSuccess: ()->Unit){
             Spacer(modifier = Modifier.height(16.dp))
             Row {
                 Button(onClick = {
-                    loginClick(username.value, password.value, context, onLoginSuccess)
+                    //ToDO: viewmodeldan gelecek
+                    //loginClick(username.value, password.value, context, onLoginSuccess)
                 }) { Text("Giriş Yap") }
 
                 Button(onClick = {
-                    registerClick(username.value,password.value, context, onLoginSuccess)
+                    //ToDO: viewmodeldan gelecek
+                    //registerClick(username.value,password.value, context, onLoginSuccess)
                 }) { Text("Kayıt ol") }
             }
 
@@ -69,31 +75,3 @@ fun LoginScreen(onLoginSuccess: ()->Unit){
     }
 }
 
-private fun loginClick(usernameValue: String, passwordValue:String, parent: Context, onLoginSuccess:()->Unit){
-    if(usernameValue.isNotEmpty() && passwordValue.isNotEmpty()){
-        auth.signInWithEmailAndPassword(usernameValue,passwordValue).addOnSuccessListener{
-            //ToDo: goto MainActivity with login success
-            onLoginSuccess()
-        }.addOnFailureListener{
-            Toast.makeText(parent, it.localizedMessage ,Toast.LENGTH_LONG).show()
-        }
-    }else{
-        Toast.makeText(parent, "Lütfen email ve parolayı giriniz!",Toast.LENGTH_LONG).show()
-    }
-
-}
-
-private fun registerClick(usernameValue: String, passwordValue:String, parent: Context, onLoginSuccess:()->Unit){
-
-    if(usernameValue.isNotEmpty() && passwordValue.isNotEmpty()){
-        auth.createUserWithEmailAndPassword(usernameValue,passwordValue).addOnSuccessListener{
-            //ToDo: goto MainActivity with register success
-            onLoginSuccess()
-        }.addOnFailureListener{
-            Toast.makeText(parent, it.localizedMessage ,Toast.LENGTH_LONG).show()
-        }
-    }else{
-        Toast.makeText(parent, "Lütfen email ve parolayı giriniz!",Toast.LENGTH_LONG).show()
-    }
-
-}

@@ -1,10 +1,8 @@
-package com.profplay.knowledgebox
+package com.profplay.knowledgebox.view
 
-import android.content.Context
+
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,7 +22,7 @@ import com.google.firebase.ktx.Firebase
 import com.profplay.knowledgebox.screen.LoginScreen
 import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
 
-internal lateinit var auth: FirebaseAuth
+internal lateinit var myAuth: FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +49,11 @@ class LoginActivity : ComponentActivity() {
             }
         }
 
-        auth = Firebase.auth
-        if(auth.currentUser != null) {
+        myAuth = Firebase.auth
+        myAuth.currentUser?.let {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            finish()
             startActivity(intent)
-
+            finish()
         }
 
     }
