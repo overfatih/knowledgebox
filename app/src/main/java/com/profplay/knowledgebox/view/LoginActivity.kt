@@ -29,9 +29,7 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             val navController = rememberNavController()
-
             KnowledgeBoxTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)
@@ -43,21 +41,17 @@ class LoginActivity : ComponentActivity() {
                                 })
                             }
                         }
-
                     }
                 }
             }
         }
-
         myAuth = Firebase.auth
         myAuth.currentUser?.let {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
-
     }
-
     private fun navigateToMainActivity() {
         // MainActivity'ye geçiş yapmak için Intent kullanıyoruz
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
@@ -65,12 +59,10 @@ class LoginActivity : ComponentActivity() {
         finish()  // LoginActivity'yi kapatıyoruz ki geri butonu ile tekrar açılmasın
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun LoginActivityPreview() {
     KnowledgeBoxTheme {
         LoginScreen(onLoginSuccess = { })
-
     }
 }

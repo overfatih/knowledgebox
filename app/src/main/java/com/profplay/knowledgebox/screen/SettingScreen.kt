@@ -11,13 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ProfileScreen() {
+fun SettingScreen(){
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.inverseSurface)
     ) {
-        Text(text="Here is Profile Screen")
+        Text(text="Here is Setting Screen")
     }
 }

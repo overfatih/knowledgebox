@@ -6,32 +6,28 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
 
 @Composable
-fun MainScreen(name: String) {
+fun MainScreen(name: String, navController: NavController) {
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -43,16 +39,16 @@ fun MainScreen(name: String) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
             ) {
-            MainButton("Knowledge Pool", Icons.Filled.Done){ }
-            MainButton("Game",Icons.Filled.Done){ }
+            MainButton("Knowledge Pool", Icons.Filled.Done){navController.navigate("knowledge_details_screen")}
+            MainButton("Game",Icons.Filled.Done){ navController.navigate("game_screen") }
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton("Setting",Icons.Filled.Done){ }
-            MainButton(" ",Icons.Filled.Done){ }
+            MainButton("Setting",Icons.Filled.Done){ navController.navigate("setting_screen") }
+            MainButton(" ",Icons.Filled.Done){  }
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
@@ -86,6 +82,7 @@ fun MainButton(buttomDescription:String, iconVector:ImageVector, onClick: () -> 
 @Composable
 fun MainScreenPreview() {
     KnowledgeBoxTheme {
-        MainScreen("Knowledge Box")
+        val navControllerPreview = rememberNavController()
+        MainScreen("Knowledge Box", navControllerPreview)
     }
 }
