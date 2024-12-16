@@ -40,7 +40,7 @@ fun CityRow(city: City, navController: NavController) {
         .background(color = MaterialTheme.colorScheme.primaryContainer)
         .clickable {
             navController.navigate(
-                "city_details_screen/${city.id}"
+                "city_details_screen/${city.cityId}"
             )
         }
     ) {

@@ -48,7 +48,8 @@ fun CityDetailsScreen(city: City?){
         )
 
         Text(
-            text = city?.cityDetails?.name ?: "",
+
+            text = "cityDetail.name", /*ToDo: cityDetail.name gelecek viewModel kısmında yap*/
             style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.padding(2.dp),
             fontWeight = FontWeight.Bold,

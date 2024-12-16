@@ -22,12 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
+import com.profplay.knowledgebox.viewModel.MainViewModel
 
 @Composable
 fun MainScreen(name: String, navController: NavController) {
+
+    val viewModel : MainViewModel = viewModel()
+
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
