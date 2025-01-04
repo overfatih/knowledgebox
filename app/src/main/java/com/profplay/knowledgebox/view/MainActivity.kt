@@ -2,6 +2,7 @@ package com.profplay.knowledgebox.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,22 +34,23 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
+import com.profplay.knowledgebox.roomdb.CityDataImporter.loadCitiesFromCsv
 import com.profplay.knowledgebox.roomdb.CityDatabase
-import com.profplay.knowledgebox.roomdb.CityRepository
-import com.profplay.knowledgebox.roomdb.MainViewModelFactory
 import com.profplay.knowledgebox.screen.CityDetailsScreen
 import com.profplay.knowledgebox.screen.GameScreen
 import com.profplay.knowledgebox.screen.KnowledgePoolScreen
 import com.profplay.knowledgebox.screen.MainScreen
 import com.profplay.knowledgebox.screen.SettingScreen
 import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
-import com.profplay.knowledgebox.viewModel.MainViewModel
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.ViewModelProvider
+import com.profplay.knowledgebox.viewModel.CityDetailViewModel
+import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
+import kotlinx.coroutines.launch
+
 
 class MainActivity : ComponentActivity() {
 
     internal lateinit var myAuth: FirebaseAuth
+
     private val database by lazy {
         Room.databaseBuilder(
             applicationContext,
@@ -58,11 +61,10 @@ class MainActivity : ComponentActivity() {
 
     private val cityDao by lazy { database.cityDao() }
     private val cityDetailDao by lazy { database.cityDetailDao() }
-    private val repository by lazy { CityRepository(cityDao, cityDetailDao) }
 
-    private val mainViewModel: MainViewModel by viewModels {
-        MainViewModelFactory(repository)
-    }
+
+    private val knowledgePoolViewModel: KnowledgePoolViewModel by viewModels<KnowledgePoolViewModel> ()
+    private val cityDetailViewModel: CityDetailViewModel by viewModels<CityDetailViewModel> ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,11 +113,13 @@ class MainActivity : ComponentActivity() {
                                 MainScreen(name = "Knowledge Box", navController = navController)
                             }
 
-                            composable("knowledge_details_screen") {
-                                val cityListState = mainViewModel.cityList.collectAsState()
-
+                            composable("knowledge_pool_screen") {
+                                knowledgePoolViewModel.getAllCities()
+                                val cityList = remember {
+                                    knowledgePoolViewModel.cityList.value
+                                }
                                 KnowledgePoolScreen(
-                                    cityList = cityListState.value,
+                                    cityList = cityList,
                                     navController = navController
                                 )
                             }
@@ -135,20 +139,36 @@ class MainActivity : ComponentActivity() {
                                 val cityIdString = remember {
                                     it.arguments?.getString("cityId")
                                 }
-                                /* ToDo: Buraya bir viewModel eklenecek.
-                                    Listeden (KnowledgePool içinden tıklanan şehrin Idsini gelecek.
-                                    Gelen bu idden cityViewModel.getCityWithId(cityId)) gibi bir fonksiyonla
-                                    şehri alıp cityDetailsScreene gönderilecek
-                                 */
-                                val selectedCity = city
-                                CityDetailsScreen(city = selectedCity)
+                                cityDetailViewModel.getCity(cityIdString?.toInt()?:1)
+                                val selectedCity = remember {
+                                    cityDetailViewModel.selectedCity.value
+                                }
+                                cityDetailViewModel.getCityDetails(selectedCity.plateNumber)
+                                val cityDetails = remember {
+                                    cityDetailViewModel.selectedCityDetails.value
+                                }
+                                CityDetailsScreen(city = selectedCity,cityDetails= cityDetails)
                             }
                         }
                     }
                 }
             }
         }
+        /*csv loading*/
 
+        // CSV dosyasını yükle
+        lifecycleScope.launch {
+            loadCitiesFromCsv(this@MainActivity, cityDao)
+            val allCities = cityDao.getAllCities()
+            Log.d("CityCheck", "Cities in database: $allCities")
+
+            // Veritabanındaki şehirleri al
+            val cities = cityDao.getAllCities()
+            cities.forEach {
+                println("${it.name}: ${it.avatar}")
+            }
+        }
+        /*csv loading*/
 
     }
 

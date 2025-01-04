@@ -16,7 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.screen.CityRow
 
 @Composable
 fun KnowledgePoolScreen(cityList: List<City>, navController: NavController ){

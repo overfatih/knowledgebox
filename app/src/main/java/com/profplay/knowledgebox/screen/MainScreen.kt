@@ -44,7 +44,7 @@ fun MainScreen(name: String, navController: NavController) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
             ) {
-            MainButton("Knowledge Pool", Icons.Filled.Done){navController.navigate("knowledge_details_screen")}
+            MainButton("Knowledge Pool", Icons.Filled.Done){navController.navigate("knowledge_pool_screen")}
             MainButton("Game",Icons.Filled.Done){ navController.navigate("game_screen") }
         }
         Row (

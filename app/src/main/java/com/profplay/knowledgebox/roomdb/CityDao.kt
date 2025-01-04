@@ -3,6 +3,7 @@ package com.profplay.knowledgebox.roomdb
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
@@ -28,6 +29,9 @@ interface CityDao {
     @Insert
     suspend fun insert(city: City)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE) // Çakışma durumunda mevcut veriyi günceller
+    suspend fun insertAll(cities: List<City>)
+
     @Delete()
     suspend fun delete(city: City)
 
@@ -37,8 +41,11 @@ interface CityDao {
 @Dao
 interface CityDetailDao {
     @Query("SELECT * FROM city_detail WHERE plate_number = :plateNumber AND type= :type")
-    fun getDetailsByPlateNumber(plateNumber: Int, type: String): List<CityDetail>
+    fun getDetailsByPlateNumberAndType(plateNumber: Int, type: String): CityDetail?
+
+    @Query("SELECT * FROM city_detail WHERE plate_number = :plateNumber")
+    fun getDetailsByPlateNumber(plateNumber: String): List<CityDetail?>
 
     @Query("SELECT * FROM city_detail WHERE plate_number != :plateNumber AND type= :type ORDER BY RANDOM() LIMIT :limit")
-    fun getRandomDetailsExcludingPlate(plateNumber: Int, type:String, limit: Int): List<CityDetail>
+    fun getRandomDetailsExcludingPlate(plateNumber: Int, type:String, limit: Int): List<CityDetail?>
 }
