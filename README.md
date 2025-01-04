@@ -1,2 +1,2 @@
 # knowledgebox
-knowledge box is a education project.
+knowledge box is an educational project. This project aim is teaching with game.
