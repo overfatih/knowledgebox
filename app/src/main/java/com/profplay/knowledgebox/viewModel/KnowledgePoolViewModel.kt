@@ -8,13 +8,12 @@ import androidx.room.Room
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class KnowledgePoolViewModel(application: Application) : AndroidViewModel(application)  {
     private val db = Room.databaseBuilder(
         getApplication(),
-        CityDatabase::class.java, name = "Cities"
+        CityDatabase::class.java, name = "city_database"
     ).build()
     private val cityDao = db.cityDao()
 

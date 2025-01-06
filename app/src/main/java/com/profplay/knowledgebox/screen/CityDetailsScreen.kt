@@ -2,8 +2,10 @@ package com.profplay.knowledgebox.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
 import com.profplay.knowledgebox.R
@@ -22,14 +25,29 @@ import com.profplay.knowledgebox.R
 @Composable
 fun CityDetailsScreen(city: City?, cityDetails: List<CityDetail?>){
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = "Şehir Detay",
-            style = MaterialTheme.typography.displayLarge,
-            modifier = Modifier.padding(2.dp),
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            textAlign = TextAlign.Center
-        )
+        city?.let {
+            Text(
+                text = "Şehir Detay",
+                style = MaterialTheme.typography.displayLarge,
+                modifier = Modifier.padding(2.dp),
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
+            it.avatar?.let { avatar ->
+                AsyncImage(
+                    model = avatar,
+                    contentDescription = city.name,
+                    modifier = Modifier.size(64.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = it.name,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
 
 
         /*val imageBitmap = city?.avatar?.let as ByteArray { byteArray ->
@@ -38,43 +56,27 @@ fun CityDetailsScreen(city: City?, cityDetails: List<CityDetail?>){
 
         */
         //ToDo: Avatar String? tanımlı buradaki işlem için avatarin yuklendigi adres lazim
-        Image(
-            bitmap = ImageBitmap.imageResource(id = R.drawable.ic_launcher_background),
-            contentDescription = city?.name ?: "",
-            modifier = Modifier
-                .padding(16.dp)
-                .size(300.dp, 200.dp)
-        )
-
-        Text(
-            text = city?.name ?: "",
-            style = MaterialTheme.typography.displaySmall,
-            modifier = Modifier.padding(2.dp),
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            textAlign = TextAlign.Center
-        )
 
         cityDetails.forEach {
             it?.let {
                 /*ToDo: image ismi olacak. R.drawable... yerine ekle*/
-                Image(
-                    bitmap = ImageBitmap.imageResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = it.feature ?: "",
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .size(225.dp, 150.dp)
-                )
+                it.image?.let { image ->
+                    AsyncImage(
+                        model = image,
+                        contentDescription = it.type,
+                        modifier = Modifier.size(64.dp).size(225.dp, 150.dp)
+                    )
+                }
                 Text(
-                    text = it.type, /*ToDo: cityDetail.name gelecek viewModel kısmında yap*/
+                    text = it.type, /*ToDo: cityDetail.type gelecek viewModel kısmında yap*/
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier.padding(2.dp),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Red,
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = it.feature, /*ToDo: cityDetail.name gelecek viewModel kısmında yap*/
+                    text = it.feature, /*ToDo: cityDetail.feature gelecek viewModel kısmında yap*/
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier.padding(2.dp),
                     fontWeight = FontWeight.Bold,

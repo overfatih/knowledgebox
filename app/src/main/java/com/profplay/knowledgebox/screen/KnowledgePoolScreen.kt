@@ -1,16 +1,21 @@
 package com.profplay.knowledgebox.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -19,21 +24,39 @@ import com.profplay.knowledgebox.model.City
 
 @Composable
 fun KnowledgePoolScreen(cityList: List<City>, navController: NavController ){
-    LazyColumn(
-            modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
-    ) {
-        items(cityList) {
-            CityRow(city = it, navController=navController)
+    Log.d("KnowledgePoolScreen","Before LazyColumn...")
+    Scaffold(
+        topBar = {},
+        content = { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.primaryContainer)
+            ) {
+                if (cityList.isEmpty()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                } else {
+                    LazyColumn(
+                        contentPadding = innerPadding,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(cityList) { city ->
+                            CityRow(city = city, navController = navController)
+                        }
+                    }
+                }
             }
-    }
+        }
+    )
 
 }
 
 
 @Composable
 fun CityRow(city: City, navController: NavController) {
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .background(color = MaterialTheme.colorScheme.primaryContainer)

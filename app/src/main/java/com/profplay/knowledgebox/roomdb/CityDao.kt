@@ -48,4 +48,10 @@ interface CityDetailDao {
 
     @Query("SELECT * FROM city_detail WHERE plate_number != :plateNumber AND type= :type ORDER BY RANDOM() LIMIT :limit")
     fun getRandomDetailsExcludingPlate(plateNumber: Int, type:String, limit: Int): List<CityDetail?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE) // Çakışma durumunda mevcut veriyi günceller
+    suspend fun insertAll(cityDetails: List<CityDetail>):List<Long>
+
+    @Query("SELECT * FROM city_detail")
+    suspend fun getAllCityDetails(): List<CityDetail>
 }

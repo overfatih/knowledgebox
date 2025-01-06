@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
 
-@Database(entities = [City::class, CityDetail::class], version = 1)
+@Database(entities = [City::class, CityDetail::class], version = 2)
 abstract class CityDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
     abstract fun cityDetailDao(): CityDetailDao

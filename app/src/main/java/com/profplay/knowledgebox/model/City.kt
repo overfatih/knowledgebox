@@ -32,7 +32,7 @@ data class City(
 data class CityDetail(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "city_detail_id" )
-    var cityDetailid:Int=0,
+    var cityDetailId:Int=0,
 
     @ColumnInfo(name = "feature" )
     var feature:String,

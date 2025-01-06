@@ -3,7 +3,6 @@ package com.profplay.knowledgebox.viewModel
 import android.app.Application
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.profplay.knowledgebox.model.City
@@ -16,12 +15,12 @@ class CityDetailViewModel(application: Application): AndroidViewModel(applicatio
 
     private val db = Room.databaseBuilder(
         getApplication(),
-        CityDatabase::class.java, name = "Cities"
+        CityDatabase::class.java, name = "city_database"
     ).build()
     private val cityDao = db.cityDao()
     private val cityDetailDao = db.cityDetailDao()
 
-    val selectedCity = mutableStateOf<City>(City(1,"45","Manisa",""))
+    val selectedCity = mutableStateOf<City>(City(45,"45","Manisa",""))
     val selectedCityDetails = mutableStateOf<List<CityDetail?>>(listOf())
 
     fun getCity(cityId:Int){
