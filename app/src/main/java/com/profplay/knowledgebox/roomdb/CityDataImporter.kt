@@ -46,7 +46,7 @@ object CityDetailsDataImporter {
                 if (tokens.size == 5) { // Beklenen sütun sayısı 5 olmalı
                     try {
                         val cityDetail = CityDetail(
-                            cityDetailId = 0, // Room bunu otomatik oluşturacak
+                            cityDetailId = tokens[0].toInt(),
                             feature = tokens[1],
                             type = tokens[2],
                             image = tokens[3],

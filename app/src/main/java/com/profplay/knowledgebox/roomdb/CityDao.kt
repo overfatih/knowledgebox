@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CityDao {
@@ -48,6 +49,9 @@ interface CityDetailDao {
 
     @Query("SELECT * FROM city_detail WHERE plate_number != :plateNumber AND type= :type ORDER BY RANDOM() LIMIT :limit")
     fun getRandomDetailsExcludingPlate(plateNumber: Int, type:String, limit: Int): List<CityDetail?>
+
+    @Query("DELETE FROM city_detail")
+    suspend fun deleteAllCityDetails()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) // Çakışma durumunda mevcut veriyi günceller
     suspend fun insertAll(cityDetails: List<CityDetail>):List<Long>

@@ -19,9 +19,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -124,15 +127,17 @@ class MainActivity : ComponentActivity() {
                                 val cityIdString = remember {
                                     it.arguments?.getString("cityId")
                                 }
-                                cityDetailViewModel.getCity(cityIdString?.toInt()?:1)
-                                val selectedCity = remember {
-                                    cityDetailViewModel.selectedCity.value
+                                LaunchedEffect(cityIdString) {
+                                    cityDetailViewModel.getCity(cityIdString?.toInt()?:1)
                                 }
-                                cityDetailViewModel.getCityDetails(selectedCity.plateNumber)
-                                val cityDetails = remember {
-                                    cityDetailViewModel.selectedCityDetails.value
+                                val selectedCity = cityDetailViewModel.selectedCity.value
+
+                                LaunchedEffect(selectedCity.plateNumber){
+                                    cityDetailViewModel.getCityDetails(selectedCity.plateNumber)
                                 }
-                                CityDetailsScreen(city = selectedCity,cityDetails= cityDetails)
+                                val cityDetails = cityDetailViewModel.selectedCityDetails.value
+
+                                CityDetailsScreen(city = selectedCity, cityDetails= cityDetails)
                             }
                         }
                     }

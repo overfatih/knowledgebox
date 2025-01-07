@@ -34,6 +34,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
         // CSV dosyasını yükle
         viewModelScope.launch {
+            /*cityDetailDao.deleteAllCityDetails()
+            Log.d("init Message","delete all citydetails")*/
             loadCitiesFromCsv(application, cityDao)
             loadCityDetailsFromCsv(application, cityDetailDao)
         }

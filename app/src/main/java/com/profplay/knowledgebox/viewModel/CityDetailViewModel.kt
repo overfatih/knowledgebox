@@ -33,6 +33,7 @@ class CityDetailViewModel(application: Application): AndroidViewModel(applicatio
     }
 
     fun getCityDetails(plateNumber: String){
+        selectedCityDetails.value = emptyList()
         viewModelScope.launch(Dispatchers.IO){
             val cityDetailsList = cityDetailDao.getDetailsByPlateNumber(plateNumber)
             cityDetailsList?.let {

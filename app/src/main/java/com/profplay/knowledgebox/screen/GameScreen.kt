@@ -28,5 +28,6 @@ fun GameScreen(){
             style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(2.dp),
             fontWeight = FontWeight.Bold)
+
     }
 }
