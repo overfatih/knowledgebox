@@ -2,7 +2,6 @@ package com.profplay.knowledgebox.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,11 +19,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,8 +30,6 @@ import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityDetail
 import com.profplay.knowledgebox.screen.CityDetailsScreen
 import com.profplay.knowledgebox.screen.GameScreen
 import com.profplay.knowledgebox.screen.KnowledgePoolScreen
@@ -44,6 +39,8 @@ import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
 import com.profplay.knowledgebox.viewModel.CityDetailViewModel
 import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
 import com.profplay.knowledgebox.viewModel.MainViewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 
 class MainActivity : ComponentActivity() {
@@ -103,11 +100,11 @@ class MainActivity : ComponentActivity() {
 
                             composable("knowledge_pool_screen") {
                                 knowledgePoolViewModel.getAllCities()
-                                val cityList = remember {
+                                val cityList by remember {
                                     knowledgePoolViewModel.cityList
                                 }
                                 KnowledgePoolScreen(
-                                    cityList = cityList.value,
+                                    cityList = cityList,
                                     navController = navController
                                 )
                             }
@@ -135,9 +132,9 @@ class MainActivity : ComponentActivity() {
                                 LaunchedEffect(selectedCity.plateNumber){
                                     cityDetailViewModel.getCityDetails(selectedCity.plateNumber)
                                 }
-                                val cityDetails = cityDetailViewModel.selectedCityDetails.value
+                                val cityWithTypes = cityDetailViewModel.selectedCityDetails.value
 
-                                CityDetailsScreen(city = selectedCity, cityDetails= cityDetails)
+                                CityDetailsScreen(city = selectedCity, cityWithTypes = cityWithTypes)
                             }
                         }
                     }

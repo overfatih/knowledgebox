@@ -3,8 +3,10 @@ package com.profplay.knowledgebox.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 @Entity(
     tableName = "city",
@@ -27,7 +29,7 @@ data class City(
 
 @Entity(
     tableName = "city_detail",
-    indices = [Index("plate_number")] // Performans için indeks ekleyin
+    indices = [Index("plate_number")], // Performans için indeks ekleyin
 )
 data class CityDetail(
     @PrimaryKey(autoGenerate = true)
@@ -37,12 +39,32 @@ data class CityDetail(
     @ColumnInfo(name = "feature" )
     var feature:String,
 
-    @ColumnInfo(name = "type")
-    var type: String,
+    @ColumnInfo(name = "type_id", defaultValue = "0")
+    var typeId: Int, // TypeOfCityDetail tablosundaki typeId ile ilişkilendirilecek
 
     @ColumnInfo(name = "image" )
     var image: String?,
 
     @ColumnInfo(name = "plate_number") // Şehir plakası ile bağ
     var plateNumber: String
+)
+
+@Entity(tableName = "type_of_city_detail")
+data class TypeOfCityDetail(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "type_id")
+    val typeId: Int,
+
+    @ColumnInfo(name = "type_name")
+    val typeName: String
+)
+
+data class CityWithType(
+    @Embedded val cityDetail: CityDetail,
+
+    @Relation(
+        parentColumn = "type_id",
+        entityColumn = "type_id"
+    )
+    val typeOfCityDetail: TypeOfCityDetail
 )

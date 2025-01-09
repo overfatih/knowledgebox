@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityDetail
+import com.profplay.knowledgebox.model.CityWithType
 import com.profplay.knowledgebox.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class CityDetailViewModel(application: Application): AndroidViewModel(applicatio
     private val cityDetailDao = db.cityDetailDao()
 
     val selectedCity = mutableStateOf<City>(City(45,"45","Manisa",""))
-    val selectedCityDetails = mutableStateOf<List<CityDetail?>>(listOf())
+    val selectedCityDetails = mutableStateOf<List<CityWithType>>(listOf())
 
     fun getCity(cityId:Int){
         viewModelScope.launch(Dispatchers.IO){

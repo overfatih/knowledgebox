@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
+import com.profplay.knowledgebox.model.TypeOfCityDetail
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -48,7 +49,7 @@ object CityDetailsDataImporter {
                         val cityDetail = CityDetail(
                             cityDetailId = tokens[0].toInt(),
                             feature = tokens[1],
-                            type = tokens[2],
+                            typeId = tokens[2].toInt(),
                             image = tokens[3],
                             plateNumber = tokens[4]
                         )
@@ -64,6 +65,35 @@ object CityDetailsDataImporter {
 
         val insertedCount = cityDetailDao.insertAll(cityDetails)
         Log.d("CityDetails", "Inserted $insertedCount cityDetails into Room")
+
+    }
+}
+
+object TypeOfCityDetailDataImporter {
+    suspend fun loadTypeOfCityDetailFromCsv(context: Context, typeOfCityDetailDao: TypeOfCityDetailDao) {
+        val typeOfCityDetails = mutableListOf<TypeOfCityDetail>()
+
+        context.assets.open("type_of_city_detail.csv").bufferedReader().use { reader ->
+            reader.readLines().drop(1).forEach { line -> // Başlık satırını atla
+                val tokens = line.split(";") // Ayırıcıyı doğru seçtiğinizden emin olun
+                if (tokens.size == 2) { // Beklenen sütun sayısı id,name
+                    try {
+                        val typeOfCityDetail = TypeOfCityDetail(
+                            typeId = tokens[0].toInt(),
+                            typeName = tokens[1],
+                        )
+                        typeOfCityDetails.add(typeOfCityDetail)
+                    } catch (e: Exception) {
+                        Log.e("TypeOfCityDetails", "Error parsing line: $line", e)
+                    }
+                } else {
+                    Log.e("TypeOfCityDetails", "Invalid line format: $line")
+                }
+            }
+        }
+
+        val insertedCount = typeOfCityDetailDao.insertAll(typeOfCityDetails)
+        Log.d("TypeOfCityDetails", "Inserted $insertedCount typeOfCityDetails into Room")
 
     }
 }
