@@ -12,7 +12,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,24 +50,24 @@ fun MainScreen(name: String, navController: NavController) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
             ) {
-            MainButton("Knowledge Pool", Icons.Filled.Done){navController.navigate("knowledge_pool_screen")}
-            MainButton("Game",Icons.Filled.Done){ navController.navigate("game_screen") }
+            MainButton("Knowledge Pool", Icons.Filled.List){navController.navigate("knowledge_pool_screen")}
+            MainButton("Game",Icons.Filled.PlayArrow){ navController.navigate("question_screen") }
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton("Setting",Icons.Filled.Done){ navController.navigate("setting_screen") }
-            MainButton(" ",Icons.Filled.Done){  }
+            MainButton("Setting",Icons.Filled.Settings){ navController.navigate("setting_screen") }
+            MainButton("Profile",Icons.Filled.Person){  }
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton(" ", Icons.Filled.List){ }
-            MainButton(" ", Icons.Filled.Call){ }
+            MainButton(" ", Icons.Filled.Favorite){ }
+            MainButton("Leader Table", Icons.Filled.Star){ }
         }
     }
 }

@@ -6,12 +6,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.roomdb.CityDataImporter.loadCitiesFromCsv
 import com.profplay.knowledgebox.roomdb.CityDatabase
 import com.profplay.knowledgebox.roomdb.CityDetailsDataImporter.loadCityDetailsFromCsv
+import com.profplay.knowledgebox.roomdb.QuestionTemplateDataImporter.loadQuestionTemplateFromCsv
 import com.profplay.knowledgebox.roomdb.TypeOfCityDetailDataImporter.loadTypeOfCityDetailFromCsv
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
@@ -27,7 +26,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         CityDatabase::class.java, name = "city_database",
     )
         /*.fallbackToDestructiveMigration()*/ // Tüm eski verileri silip yeniden oluşturur
-        /*.addMigrations(CityDatabase.MIGRATION_1_2)*/
+        .addMigrations(CityDatabase.migration1to2)
         .addCallback(callback)  // Callback ekliyoruz
         .build()
 
@@ -36,6 +35,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val cityDao = db.cityDao()
     private val cityDetailDao = db.cityDetailDao()
     private val typeOfCityDetailDao = db.typeOfCityDetailDao()
+    private val questionTemplateDao = db.questionTemplateDao()
 
     init {
 
@@ -50,6 +50,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             loadCitiesFromCsv(application, cityDao)
             loadCityDetailsFromCsv(application, cityDetailDao)
             loadTypeOfCityDetailFromCsv(application, typeOfCityDetailDao)
+            loadQuestionTemplateFromCsv(application, questionTemplateDao)
+
         }
         /*csv loading*/
 

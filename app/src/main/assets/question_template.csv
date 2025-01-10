@@ -1,0 +1,9 @@
+﻿template_id;category_id;make_a_question_with_the_city_name;template_text
+1;4;0;%s plakalı şehir aşağıdakilerden hangisidir?
+2;4;1;%s İlinin plakası nedir?
+3;1;0;%s, hangi ilimizin meşhur yiyeceğidir?
+4;1;1;%s şehrine özgü bir yiyecek aşağıdakilerden hangisidir?
+5;2;0;%s, hangi ilimizdedir?
+6;2;1;Aşağıdaki tarihi mekanlardan hangisi %s ilindedir?
+7;3;0;%s, hangi ilimiz sınırları içindedir?
+8;3;1;Aşağıdakilerden hangisi %s il sınırları içindedir?

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Database
 import androidx.room.Room
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityWithType

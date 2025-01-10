@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -31,7 +32,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.profplay.knowledgebox.screen.CityDetailsScreen
-import com.profplay.knowledgebox.screen.GameScreen
 import com.profplay.knowledgebox.screen.KnowledgePoolScreen
 import com.profplay.knowledgebox.screen.MainScreen
 import com.profplay.knowledgebox.screen.SettingScreen
@@ -41,6 +41,8 @@ import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
 import com.profplay.knowledgebox.viewModel.MainViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.profplay.knowledgebox.screen.QuestionScreen
+import com.profplay.knowledgebox.viewModel.QuestionViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -50,6 +52,7 @@ class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels<MainViewModel> ()
     private val knowledgePoolViewModel: KnowledgePoolViewModel by viewModels<KnowledgePoolViewModel> ()
     private val cityDetailViewModel: CityDetailViewModel by viewModels<CityDetailViewModel> ()
+    private val questionViewModel: QuestionViewModel by viewModels<QuestionViewModel> ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,8 +111,22 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
                             }
-                            composable("game_screen"){
-                                GameScreen()
+                            composable("question_screen"){
+                                if(questionViewModel.question.value == null) {
+                                    questionViewModel.generateQuestion()
+                                }
+                                val question by remember {
+                                    questionViewModel.question
+                                }
+                                question?.let { q ->
+                                    QuestionScreen(question = q) {
+                                        questionViewModel.question.value = null
+                                        //questionViewModel.generateQuestion()
+
+
+                                    }
+
+                                } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
                             }
                             composable("setting_screen"){
                                 SettingScreen()
