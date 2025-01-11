@@ -53,7 +53,8 @@ fun QuestionScreen(question: Question, onNextQuestion: () -> Unit) {
                 val backgroundColor = when {
                     selectedOptionIndex == null -> Color.Blue // Henüz seçim yapılmadıysa
                     selectedOptionIndex == index && option == q.correctAnswer -> Color.Green // Doğru şık
-                    selectedOptionIndex == index -> Color.Red // Yanlış şık
+                    selectedOptionIndex == index -> Color.Red  // Yanlış şık
+                    option == q.correctAnswer -> Color.Green
                     else -> Color.Gray // Diğer şıklar
                 }
                 Log.d("OPTIONS:", option)

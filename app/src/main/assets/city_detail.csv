@@ -40,7 +40,7 @@
 39;Labada Borani;1;default_photo.png;39
 40;Kuzu Tandır;1;default_photo.png;40
 41;Pişmaniye;1;default_photo.png;41
-42;Bıçak Arası Pide/Ekliekmek;1;default_photo.png;42
+42;Bıçak Arası Pide/Etliekmek;1;default_photo.png;42
 43;Çömlek Kebabı;1;default_photo.png;43
 44;Kayısılı Kavurma;1;default_photo.png;44
 45;Mesir Macunu;1;default_photo.png;45
@@ -76,7 +76,7 @@
 75;Posof Elması;1;default_photo.png;75
 76;Yufka Böreği;1;default_photo.png;76
 77;Çılbır;1;default_photo.png;77
-78;Sarfranlı Pilavı;1;default_photo.png;78
+78;Safranlı Pilavı;1;default_photo.png;78
 79;Kısır;1;default_photo.png;79
 80;Tarator;1;default_photo.png;80
 81;Mamalika;1;default_photo.png;81
@@ -101,7 +101,7 @@
 100;Alaca Gölü;3;default_photo.png;19
 101;Pamukkale;3;default_photo.png;20
 102;Kerkük Dağı;3;default_photo.png;21
-103;Tunca Nehri;3;default_photo.png;22
+103;Meriç Nehri;3;default_photo.png;22
 104;Hazar Gölü;3;default_photo.png;23
 105;Karasu Irmağı;3;default_photo.png;24
 106;Palandöken Dağları;3;default_photo.png;25
@@ -181,7 +181,7 @@
 180;Sultan Süleyman Cami;2;default_photo.png;18
 181;Hattuşaş Antik Kenti;2;default_photo.png;19
 182;Hierapolis Antik Kenti;2;default_photo.png;20
-183;Meryem Ana Kilisesi;2;default_photo.png;21
+183;Malabadi Köprüsü;2;default_photo.png;21
 184;Selimiye Camisi;2;default_photo.png;22
 185;İsmet Paşa Köprüsü;2;default_photo.png;23
 186;Mama Hatun Türbesi;2;default_photo.png;24

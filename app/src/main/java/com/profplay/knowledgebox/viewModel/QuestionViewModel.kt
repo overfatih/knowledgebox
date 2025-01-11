@@ -27,6 +27,7 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             val categoryCount = questionDao.getTypeOfCityDetailCount()
             val randomCategoryId = (1..(categoryCount-1)).random()
+            //todo:plaka için eklediğim 4 numaralı kategoride hata var. program çöküyor.
             Log.d("RandomCategoryId",randomCategoryId.toString())
             // Rastgele soru kalıbını al
             val template = questionDao.getRandomTemplateByCategory(randomCategoryId)
@@ -37,19 +38,13 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
             val cityDetail = questionDao.getRandomCityDetails(randomCategoryId, "", 1).first()
             val city = questionDao.getCityByPlateNumber(cityDetail.plateNumber)
             val incorrectCityAnswers = questionDao.getRandomCities(city.plateNumber, 3)
-            val incorrectCityDetailAnswers = questionDao.getRandomCityDetails(city.plateNumber, 3)
+            val incorrectCityDetailAnswers = questionDao.getRandomCityDetails(randomCategoryId, city.plateNumber, 3)
             val isCityNameOnQuestion = questionDao.getMakeAQuestionWithTheCityName(template.templateId)
             Log.d("TemplateId",template.templateId.toString())
             val correctAnswer:Any
             Log.d("terstenSoru", isCityNameOnQuestion.toString())
             if(isCityNameOnQuestion==1){
-                questionText = when (randomCategoryId) {
-                    4 -> String.format(template.templateText, city.name)
-                    3 -> String.format(template.templateText, city.name)
-                    2 -> String.format(template.templateText, city.name)
-                    1 -> String.format(template.templateText, city.name)
-                    else -> ""
-                }
+                questionText = String.format(template.templateText, city.name)
                 // Şıkları oluştur
                 options = (incorrectCityDetailAnswers.map { it.feature } + cityDetail.feature).shuffled()
                 correctAnswer = cityDetail.feature
@@ -57,17 +52,12 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                 // Soru kalıbındaki %s'leri doldur
                 questionText = when (randomCategoryId) {
                     4 -> String.format(template.templateText, city.plateNumber)
-                    3 -> String.format(template.templateText, cityDetail.feature)
-                    2 -> String.format(template.templateText, cityDetail.feature)
-                    1 -> String.format(template.templateText, cityDetail.feature)
-                    else -> ""
+                    else -> String.format(template.templateText, cityDetail.feature)
                 }
                 // Şıkları oluştur
                 options = (incorrectCityAnswers.map { it.name } + city.name).shuffled()
                 correctAnswer = city.name
             }
-
-
 
             // Dinamik soruyu geri döndür
             question.value = Question(
