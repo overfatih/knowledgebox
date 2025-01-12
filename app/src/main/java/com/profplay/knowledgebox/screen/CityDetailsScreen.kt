@@ -25,7 +25,7 @@ import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityWithType
 
 @Composable
-fun CityDetailsScreen(city: City?, cityWithTypes: List<CityWithType>) {
+fun CityDetailsScreen( city :City, cityWithDetails :List<CityWithType>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,6 +35,9 @@ fun CityDetailsScreen(city: City?, cityWithTypes: List<CityWithType>) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Şehir bilgilerini göster
+        cityWithDetails.forEach {
+
+        }
         city?.let {
             Text(
                 text = "${it.plateNumber} ${it.name}",
@@ -47,7 +50,7 @@ fun CityDetailsScreen(city: City?, cityWithTypes: List<CityWithType>) {
             it.avatar?.let { avatar ->
                 AsyncImage(
                     model = avatar,
-                    contentDescription = city.name,
+                    contentDescription = it.name,
                     modifier = Modifier.padding(8.dp,16.dp).fillMaxWidth().height(200.dp)
                 )
             }
@@ -58,17 +61,16 @@ fun CityDetailsScreen(city: City?, cityWithTypes: List<CityWithType>) {
             CircularProgressIndicator(modifier = Modifier.fillMaxSize())
         }
 
+
         // Şehir türlerini gruplandır ve ekrana yazdır
-        if (cityWithTypes.isEmpty()) {
+        if (cityWithDetails == null) {
             CircularProgressIndicator(modifier = Modifier.fillMaxSize())
         } else {
-            // Türe göre gruplama
-            val groupedTypes = cityWithTypes.groupBy { it.typeOfCityDetail.typeName }
-
-            groupedTypes.forEach { (typeName, cityDetails) ->
+            val groupedTypes = cityWithDetails.groupBy {it.typeOfCityDetail.typeName}
+            groupedTypes.forEach { (typeName, cityWithTypes) ->
                 // Tür adı
                 Text(
-                    text = typeName,
+                    text = typeName.toString(),
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier.padding(top = 8.dp),
                     fontWeight = FontWeight.Thin,
@@ -76,9 +78,9 @@ fun CityDetailsScreen(city: City?, cityWithTypes: List<CityWithType>) {
                     textAlign = TextAlign.Start
                 )
                 // Türe ait özellikler
-                cityDetails.forEach { cityDetail ->
+                cityWithTypes.forEach {cityType ->
                     Text(
-                        text = cityDetail.cityDetail.feature,
+                        text = cityType.cityDetail.feature,
                         style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier.padding(vertical = 0.dp),
                         fontWeight = FontWeight.Bold,

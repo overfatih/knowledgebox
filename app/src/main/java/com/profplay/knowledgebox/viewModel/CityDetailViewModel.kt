@@ -1,14 +1,19 @@
 package com.profplay.knowledgebox.viewModel
 
 import android.app.Application
+import androidx.compose.runtime.Composer.Companion.Empty
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Database
 import androidx.room.Room
 import com.profplay.knowledgebox.model.City
+import com.profplay.knowledgebox.model.CityDetail
+import com.profplay.knowledgebox.model.CityWithDetails
 import com.profplay.knowledgebox.model.CityWithType
+import com.profplay.knowledgebox.model.TypeOfCityDetail
 import com.profplay.knowledgebox.roomdb.CityDatabase
+import com.profplay.knowledgebox.roomdb.TypeOfCityDetailDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,9 +25,13 @@ class CityDetailViewModel(application: Application): AndroidViewModel(applicatio
     ).build()
     private val cityDao = db.cityDao()
     private val cityDetailDao = db.cityDetailDao()
+    private val typeOfCityDetailDao = db.typeOfCityDetailDao()
+
 
     val selectedCity = mutableStateOf<City>(City(45,"45","Manisa",""))
-    val selectedCityDetails = mutableStateOf<List<CityWithType>>(listOf())
+    val selectedCityDetails = mutableStateOf<List<CityDetail>>(listOf())
+    val selectedDetailsByCity = mutableStateOf<List<CityDetail>>(listOf())
+    val selectedCityWithDetails = mutableStateOf<List<CityWithType>>(listOf())
 
     fun getCity(cityId:Int){
         viewModelScope.launch(Dispatchers.IO){
@@ -33,14 +42,35 @@ class CityDetailViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun getCityDetails(plateNumber: String){
+    fun getCityDetails(cityId: Int){
         selectedCityDetails.value = emptyList()
         viewModelScope.launch(Dispatchers.IO){
-            val cityDetailsList = cityDetailDao.getDetailsByPlateNumber(plateNumber)
-            cityDetailsList?.let {
+            val cityDetailsList = cityDao.getCityWithDetails(cityId).details
+            cityDetailsList?.let() {
                 selectedCityDetails.value = it
             }
         }
+    }
+
+    fun getDetailsByCity(cityId: Int){
+        selectedDetailsByCity.value = emptyList()
+        viewModelScope.launch(Dispatchers.IO){
+            val cityDetailsList = cityDetailDao.getDetailsByCity(cityId)
+            cityDetailsList?.let() {
+                selectedDetailsByCity.value = it
+            }
+        }
+    }
+    fun getCityWithDetails(cityId: Int){
+        //selectedCityWithDetails.value = emptyList()
+        viewModelScope.launch(Dispatchers.IO){
+            val cityWithDetails = cityDao.getCityWithDetails(cityId)
+            cityWithDetails?.let() {
+                val typeIds = it.details.map {it.typeId }
+                val cityDetailIds = it.details.map {it.cityDetailId }
+                selectedCityWithDetails.value = typeOfCityDetailDao.getTypeOfCityDetailsByTypeIdesAndCityDetailIdes(typeIds,cityDetailIds)
+            }
+                    }
     }
 
 

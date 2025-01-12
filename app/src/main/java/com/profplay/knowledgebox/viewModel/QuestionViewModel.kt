@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
 import com.profplay.knowledgebox.roomdb.CityDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class QuestionViewModel(application: Application) : AndroidViewModel(application)  {
     private val db = Room.databaseBuilder(
@@ -17,6 +19,8 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
         CityDatabase::class.java, name = "city_database"
     ).build()
     private val questionDao = db.questionTemplateDao()
+    private val cityDao = db.cityDao()
+    private val cityDetailDao = db.cityDetailDao()
 
     //val question = mutableStateOf<Question>(Question(questionText = "",options = listOf(),correctAnswer = ""))
     val question = mutableStateOf<Question?>(null)
@@ -24,9 +28,9 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     fun generateQuestion() {
         if (question.value != null) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val categoryCount = questionDao.getTypeOfCityDetailCount()
-            val randomCategoryId = (1..(categoryCount-1)).random()
+            val randomCategoryId = (1..(categoryCount)).random()
             //todo:plaka için eklediğim 4 numaralı kategoride hata var. program çöküyor.
             Log.d("RandomCategoryId",randomCategoryId.toString())
             // Rastgele soru kalıbını al
@@ -35,10 +39,25 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
             val options: List<String>
 
             // Doğru veri al
-            val cityDetail = questionDao.getRandomCityDetails(randomCategoryId, "", 1).first()
-            val city = questionDao.getCityByPlateNumber(cityDetail.plateNumber)
-            val incorrectCityAnswers = questionDao.getRandomCities(city.plateNumber, 3)
-            val incorrectCityDetailAnswers = questionDao.getRandomCityDetails(randomCategoryId, city.plateNumber, 3)
+
+            val cityDetails = cityDetailDao.getRandomDetails(typeId = randomCategoryId, 1)
+            if (cityDetails.isEmpty()) {
+                Log.e("Error", "No city details found for typeId = $randomCategoryId")
+                return@launch
+            }
+
+            val cityDetail = cityDetails.random()
+            Log.d("cityDetails.random", cityDetail.cityDetailId.toString())
+            val cities = cityDetailDao.getDetailWithCities(cityDetail.cityDetailId).cities
+            if (cities.isEmpty()) {
+                Log.e("Error", "No cities found for cityDetailId = ${cityDetail.cityDetailId}")
+                return@launch
+            }
+            cities.forEach { Log.d("cities", it.name) }
+            val cityIds = cities.map { it.cityId }
+            val city = cities.random()
+            val incorrectCityAnswers = cityDao.getRandomCitiesWithOutCityDetailId(cityDetail.cityDetailId, 3)
+            val incorrectCityDetailAnswers = cityDetailDao.getRandomDetailsExcludingCities(cityIds = cityIds, typeId =randomCategoryId, limit= 3)
             val isCityNameOnQuestion = questionDao.getMakeAQuestionWithTheCityName(template.templateId)
             Log.d("TemplateId",template.templateId.toString())
             val correctAnswer:Any

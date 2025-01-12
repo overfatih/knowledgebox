@@ -1,249 +1,330 @@
-﻿city_detail_id;feature;type_id;image;plate_number
-1;Şalgam;1;default_photo.png;1
-2;Dövmeç;1;default_photo.png;2
-3;Manda Yoğurdu;1;default_photo.png;3
-4;Ayranaşı;1;default_photo.png;4
-5;Amasya Elması;1;default_photo.png;5
-6;Beypazarı Güveci;1;default_photo.png;6
-7;Cevizli Baklava;1;default_photo.png;7
-8;Kuymak;1;default_photo.png;8
-9;Çingene Pilavı;1;default_photo.png;9
-10;Keşkek;1;default_photo.png;10
-11;Parmak Köftesi;1;default_photo.png;11
-12;Ayran Çorbası;1;default_photo.png;12
-13;Büryan Kebabı;1;default_photo.png;13
-14;Bolubeyi Tatlısı;1;default_photo.png;14
-15;Testi Kebabı;1;default_photo.png;15
-16;İnegöl Köfte;1;default_photo.png;16
-17;Ovmaç Çorbası;1;default_photo.png;17
-18;Tava Çöreği;1;default_photo.png;18
-19;Kuzu Tandır;1;default_photo.png;19
-20;Biber Tatari;1;default_photo.png;20
-21;Mumbar Dolması;1;default_photo.png;21
-22;Kadınbudu Köfte;1;default_photo.png;22
-23;Harput Köftesi;1;default_photo.png;23
-24;Kuzu Dolması;1;default_photo.png;24
-25;Cağ Kebabı;1;default_photo.png;25
-26;Çiğ Börek;1;default_photo.png;26
-27;Baklava;1;default_photo.png;27
-28;Kuymak;1;default_photo.png;28
-29;Golot (Hamurişi);1;default_photo.png;29
-30;Perde Pilavı;1;default_photo.png;30
-31;Tepsi Kebabı;1;default_photo.png;31
-32;Gül Böreği;1;default_photo.png;32
-33;Tantuni;1;default_photo.png;33
-34;Sultanahmet Köftesi;1;default_photo.png;34
-35;Boyoz;1;default_photo.png;35
-36;Aşlama;1;default_photo.png;36
-37;Banduma;1;default_photo.png;37
-38;Mantı;1;default_photo.png;38
-39;Labada Borani;1;default_photo.png;39
-40;Kuzu Tandır;1;default_photo.png;40
-41;Pişmaniye;1;default_photo.png;41
-42;Bıçak Arası Pide/Etliekmek;1;default_photo.png;42
-43;Çömlek Kebabı;1;default_photo.png;43
-44;Kayısılı Kavurma;1;default_photo.png;44
-45;Mesir Macunu;1;default_photo.png;45
-46;Dondurma;1;default_photo.png;46
-47;Kaburga Dolması;1;default_photo.png;47
-48;Çökertme Kebabı;1;default_photo.png;48
-49;Teter Helvası;1;default_photo.png;49
-50;Testi Kebabı;1;default_photo.png;50
-51;Niğde Mantısı;1;default_photo.png;51
-52;Mıhlama;1;default_photo.png;52
-53;Kavurmalı Pidesi;1;default_photo.png;53
-54;Kaynarca Köftesi;1;default_photo.png;54
-55;Samsun Pide;1;default_photo.png;55
-56;Zılgıt;1;default_photo.png;56
-57;Hamsi Buğulama;1;default_photo.png;57
-58;Sübüra (Soğuk Ayran Çorbası);1;default_photo.png;58
-59;Şarköy Buğulaması;1;default_photo.png;59
-60;Zile Pekmezi;1;default_photo.png;60
-61;Akçaabat Köftesi;1;default_photo.png;61
-62;Tulum Peyniri;1;default_photo.png;62
-63;Lahmacun;1;default_photo.png;63
-64;Tarhana Çorbası;1;default_photo.png;64
-65;Otlu Peynir;1;default_photo.png;65
-66;Arapaşı;1;default_photo.png;66
-67;Taze Fasulye;1;default_photo.png;67
-68;Kuskus Pilavı;1;default_photo.png;68
-69;Lor Dolması;1;default_photo.png;69
-70;Bıldırcın Dolması;1;default_photo.png;70
-71;Keşkek;1;default_photo.png;71
-72;Sarımsaklı Yoğurt;1;default_photo.png;72
-73;Bulgur Pilavı;1;default_photo.png;73
-74;Hamsi Buğulama;1;default_photo.png;74
-75;Posof Elması;1;default_photo.png;75
-76;Yufka Böreği;1;default_photo.png;76
-77;Çılbır;1;default_photo.png;77
-78;Safranlı Pilavı;1;default_photo.png;78
-79;Kısır;1;default_photo.png;79
-80;Tarator;1;default_photo.png;80
-81;Mamalika;1;default_photo.png;81
-82;Seyhan Gölü;3;default_photo.png;1
-83;Nemrut Dağı;3;default_photo.png;2
-84;Frig Vadisi;3;default_photo.png;3
-85;Ağrı Dağı;3;default_photo.png;4
-86;Tavşan Dağı;3;default_photo.png;5
-87;Çubuk Çayı;3;default_photo.png;6
-88;Düden Şelalesi;3;default_photo.png;7
-89;Kaçkar Dağı;3;default_photo.png;8
-90;Altınkum Plajı;3;default_photo.png;9
-91;Kaz Dağları;3;default_photo.png;10
-92;Paşa Dağları;3;default_photo.png;11
-93;Şeytan Dağı;3;default_photo.png;12
-94;Süphen Dağı;3;default_photo.png;13
-95;Abant Gölü;3;default_photo.png;14
-96;Salda Gölü;3;default_photo.png;15
-97;Uludağ;3;default_photo.png;16
-98;Kaz Dağı;3;default_photo.png;17
-99;Yapraklı Büyük Yayla;3;default_photo.png;18
-100;Alaca Gölü;3;default_photo.png;19
-101;Pamukkale;3;default_photo.png;20
-102;Kerkük Dağı;3;default_photo.png;21
-103;Meriç Nehri;3;default_photo.png;22
-104;Hazar Gölü;3;default_photo.png;23
-105;Karasu Irmağı;3;default_photo.png;24
-106;Palandöken Dağları;3;default_photo.png;25
-107;İnönü Ovası;3;default_photo.png;26
-108;Fırat Nehri;3;default_photo.png;27
-109;Mavi Göl Kuzalan Şelalesi;3;default_photo.png;28
-110;Kökel Dağı;3;default_photo.png;29
-111;Cilo Buzulları;3;default_photo.png;30
-112;Orontes Nehri;3;default_photo.png;31
-113;Eğirdir Gölü;3;default_photo.png;32
-114;Tarsus Çayı;3;default_photo.png;33
-115;Haliç;3;default_photo.png;34
-116;Karaburun Yarım Adası;3;default_photo.png;35
-117;Arpaçay;3;default_photo.png;36
-118;Devrekani Çayı;3;default_photo.png;37
-119;Kızılırmak Nehri;3;default_photo.png;38
-120;Meriç Nehri;3;default_photo.png;39
-121;Mucur Çayı;3;default_photo.png;40
-122;Sapanca Gölü;3;default_photo.png;41
-123;Beyşehir Gölü;3;default_photo.png;42
-124;Gediz Nehri;3;default_photo.png;43
-125;Karakaya Barajı;3;default_photo.png;44
-126;Kuladokya;3;default_photo.png;45
-127;Yeşilgöz Obruğu;3;default_photo.png;46
-128;Midyat Ovası;3;default_photo.png;47
-129;Marmaris Ormanı;3;default_photo.png;48
-130;Malazgirt Ovası;3;default_photo.png;49
-131;Kapadokya;3;default_photo.png;50
-132;Hasan Dağı;3;default_photo.png;51
-133;Boztepe;3;default_photo.png;52
-134;Çamlıhemşin Yaylaları;3;default_photo.png;53
-135;Sakarya Nehri;3;default_photo.png;54
-136;Kızılırmak Deltası;3;default_photo.png;55
-137;Botan Vadisi;3;default_photo.png;56
-138;Hamsilos Koyu;3;default_photo.png;57
-139;Balıklı Çermik/Kaplıca;3;default_photo.png;58
-140;Ergene Nehri;3;default_photo.png;59
-141;Zile Çayı;3;default_photo.png;60
-142;Zigana Dağları;3;default_photo.png;61
-143;Munzur Dağları;3;default_photo.png;62
-144;Balıklı Göl;3;default_photo.png;63
-145;Ulubey Kanyonu;3;default_photo.png;64
-146;Van Gölü;3;default_photo.png;65
-147;Bozok Yaylası;3;default_photo.png;66
-148;Kozlu Plajı;3;default_photo.png;67
-149;Tuz Gölü;3;default_photo.png;68
-150;Çoruh Nehri;3;default_photo.png;69
-151;Hacıbaba Dağı;3;default_photo.png;70
-152;Çalışkan Dağları;3;default_photo.png;71
-153;Dicle Nehri;3;default_photo.png;72
-154;Cudi Dağı;3;default_photo.png;73
-155;Amasra Koyu;3;default_photo.png;74
-156;Çıldır Ovası;3;default_photo.png;75
-157;Aras Nehri;3;default_photo.png;76
-158;Armutlu Kaplıcaları;3;default_photo.png;77
-159;Küre Dağları;3;default_photo.png;78
-160;Azez Ovası;3;default_photo.png;79
-161;Ceyhan Nehri;3;default_photo.png;80
-162;Melen Çayı;3;default_photo.png;81
-163;Taş Köprü;2;default_photo.png;1
-164;Arsameia Antik Kenti;2;default_photo.png;2
-165;Yedikapılar Manastırı;2;default_photo.png;3
-166;İshak Paşa Sarayı;2;default_photo.png;4
-167;Kral Kaya Mezarları;2;default_photo.png;5
-168;Anıtkabir;2;default_photo.png;6
-169;Olympos Antik Kenti;2;default_photo.png;7
-170;İskenderpaşa Camii;2;default_photo.png;8
-171;Apollon Tapınağı;2;default_photo.png;9
-172;Aigai Antik Kenti;2;default_photo.png;10
-173;Şeyh Edebali Türbesi;2;default_photo.png;11
-174;Kuba Kümbet Kalıntıları;2;default_photo.png;12
-175;Ahlat Mezar Taşları;2;default_photo.png;13
-176;Mudurnu Evleri;2;default_photo.png;14
-177;Kibyra Antik Kenti;2;default_photo.png;15
-178;Muradiye Külliyesi;2;default_photo.png;16
-179;Aynalı Çarşı;2;default_photo.png;17
-180;Sultan Süleyman Cami;2;default_photo.png;18
-181;Hattuşaş Antik Kenti;2;default_photo.png;19
-182;Hierapolis Antik Kenti;2;default_photo.png;20
-183;Malabadi Köprüsü;2;default_photo.png;21
-184;Selimiye Camisi;2;default_photo.png;22
-185;İsmet Paşa Köprüsü;2;default_photo.png;23
-186;Mama Hatun Türbesi;2;default_photo.png;24
-187;Çifte Minareli Medrese;2;default_photo.png;25
-188;Porsuk Çayı;2;default_photo.png;26
-189;Zeugma Mozaik Müzesi;2;default_photo.png;27
-190;Giresun Kalesi;2;default_photo.png;28
-191;Karaca Mağarası;2;default_photo.png;29
-192;Kato Dağı;2;default_photo.png;30
-193;St.Pierre Kalesi;2;default_photo.png;31
-194;Aksu Antik Kenti;2;default_photo.png;32
-195;Tarsus Şelalesi;2;default_photo.png;33
-196;Topkapı Sarayı;2;default_photo.png;34
-197;Efes Antik Kenti;2;default_photo.png;35
-198;Ani Harabeleri;2;default_photo.png;36
-199;Nasrullah Cami;2;default_photo.png;37
-200;Gevaş Selçuklu Cami;2;default_photo.png;38
-201;Büyükdere;2;default_photo.png;39
-202;Cacabey Medresesi;2;default_photo.png;40
-203;Kartepe;2;default_photo.png;41
-204;Çatalhöyük Neolitik Antik Kenti;2;default_photo.png;42
-205;Aizanoi Antik Kenti;2;default_photo.png;43
-206;Aslantepe Höyüğü;2;default_photo.png;44
-207;Sardes Antik Kenti;2;default_photo.png;45
-208;Kahramanmaraş Kalesi;2;default_photo.png;46
-209;Deyrulzafaran Manastırı;2;default_photo.png;47
-210;Fethiye Antik Tiyatrosu;2;default_photo.png;48
-211;Malazgirt Kalesi;2;default_photo.png;49
-212;Ürgüp;2;default_photo.png;50
-213;Gümüşler Manastırı;2;default_photo.png;51
-214;Taşbaşı Kültür Merkezi;2;default_photo.png;52
-215;Zil Kale;2;default_photo.png;53
-216;Maşukiye;2;default_photo.png;54
-217;Atatürk Anıtı;2;default_photo.png;55
-218;Pervari Taş Köprü;2;default_photo.png;56
-219;Aşıklar Tepesi;2;default_photo.png;57
-220;Divriği Ulu Cami;2;default_photo.png;58
-221;Rakoczi Müzesi;2;default_photo.png;59
-222;Niksar Kalesi;2;default_photo.png;60
-223;Sümela Manastırı;2;default_photo.png;61
-224;Tunceli Kalesi;2;default_photo.png;62
-225;Göbeklitepe;2;default_photo.png;63
-226;Blaundus Antik Kenti;2;default_photo.png;64
-227;Akdamar Adası;2;default_photo.png;65
-228;Hattuşaş Antik Kenti;2;default_photo.png;66
-229;Gökçebey Antik Kenti;2;default_photo.png;67
-230;Yüksek Kilise;2;default_photo.png;68
-231;Bayburt Kalesi;2;default_photo.png;69
-232;Görmel Köprüsü;2;default_photo.png;70
-233;Delice Irmağı;2;default_photo.png;71
-234;Hasankeyf;2;default_photo.png;72
-235;Cizre Kalesi;2;default_photo.png;73
-236;Amasra Antik Kenti;2;default_photo.png;74
-237;Çıldır Gölü;2;default_photo.png;75
-238;Iğdır Kalesi;2;default_photo.png;76
-239;Termal Kaplıcaları;2;default_photo.png;77
-240;Safranbolu Evleri;2;default_photo.png;78
-241;Kilis Kalesi;2;default_photo.png;79
-242;Zorkun Yaylası;2;default_photo.png;80
-243;Antik Su Kemerleri;2;default_photo.png;81
-244;Laodikya;2;default_photo.png;20
-245;Etnografya Müzesi;2;default_photo.png;6
-246;Yaprak Sarma;1;default_photo.png;32
-247;Karnıyarık;1;default_photo.png;37
-248;Pastırma;1;default_photo.png;38
+﻿city_detail_id;feature;type_id;image
+1;Şalgam;1;default_photo.png
+2;Dövmeç;1;default_photo.png
+3;Manda Yoğurdu;1;default_photo.png
+4;Ayranaşı;1;default_photo.png
+5;Amasya Elması;1;default_photo.png
+6;Beypazarı Güveci;1;default_photo.png
+7;Cevizli Baklava;1;default_photo.png
+8;Kuymak;1;default_photo.png
+9;Çingene Pilavı;1;default_photo.png
+10;Keşkek;1;default_photo.png
+11;Parmak Köftesi;1;default_photo.png
+12;Ayran Çorbası;1;default_photo.png
+13;Büryan Kebabı;1;default_photo.png
+14;Bolubeyi Tatlısı;1;default_photo.png
+15;Testi Kebabı;1;default_photo.png
+16;İnegöl Köfte;1;default_photo.png
+17;Ovmaç Çorbası;1;default_photo.png
+18;Tava Çöreği;1;default_photo.png
+19;Kuzu Tandır;1;default_photo.png
+20;Biber Tatari;1;default_photo.png
+21;Mumbar Dolması;1;default_photo.png
+22;Kadınbudu Köfte;1;default_photo.png
+23;Harput Köftesi;1;default_photo.png
+24;Kuzu Dolması;1;default_photo.png
+25;Cağ Kebabı;1;default_photo.png
+26;Çiğ Börek;1;default_photo.png
+27;Baklava;1;default_photo.png
+28;Kuymak;1;default_photo.png
+29;Golot (Hamurişi);1;default_photo.png
+30;Perde Pilavı;1;default_photo.png
+31;Tepsi Kebabı;1;default_photo.png
+32;Gül Böreği;1;default_photo.png
+33;Tantuni;1;default_photo.png
+34;Sultanahmet Köftesi;1;default_photo.png
+35;Boyoz;1;default_photo.png
+36;Aşlama;1;default_photo.png
+37;Banduma;1;default_photo.png
+38;Mantı;1;default_photo.png
+39;Labada Borani;1;default_photo.png
+40;Kuzu Tandır;1;default_photo.png
+41;Pişmaniye;1;default_photo.png
+42;Bıçak Arası Pide/Etliekmek;1;default_photo.png
+43;Çömlek Kebabı;1;default_photo.png
+44;Kayısılı Kavurma;1;default_photo.png
+45;Mesir Macunu;1;default_photo.png
+46;Dondurma;1;default_photo.png
+47;Kaburga Dolması;1;default_photo.png
+48;Çökertme Kebabı;1;default_photo.png
+49;Teter Helvası;1;default_photo.png
+50;Testi Kebabı;1;default_photo.png
+51;Niğde Mantısı;1;default_photo.png
+52;Mıhlama;1;default_photo.png
+53;Kavurmalı Pidesi;1;default_photo.png
+54;Kaynarca Köftesi;1;default_photo.png
+55;Samsun Pide;1;default_photo.png
+56;Zılgıt;1;default_photo.png
+57;Hamsi Buğulama;1;default_photo.png
+58;Sübüra (Soğuk Ayran Çorbası);1;default_photo.png
+59;Şarköy Buğulaması;1;default_photo.png
+60;Zile Pekmezi;1;default_photo.png
+61;Akçaabat Köftesi;1;default_photo.png
+62;Tulum Peyniri;1;default_photo.png
+63;Lahmacun;1;default_photo.png
+64;Tarhana Çorbası;1;default_photo.png
+65;Otlu Peynir;1;default_photo.png
+66;Arapaşı;1;default_photo.png
+67;Taze Fasulye;1;default_photo.png
+68;Kuskus Pilavı;1;default_photo.png
+69;Lor Dolması;1;default_photo.png
+70;Bıldırcın Dolması;1;default_photo.png
+71;Keşkek;1;default_photo.png
+72;Sarımsaklı Yoğurt;1;default_photo.png
+73;Bulgur Pilavı;1;default_photo.png
+74;Hamsi Buğulama;1;default_photo.png
+75;Posof Elması;1;default_photo.png
+76;Yufka Böreği;1;default_photo.png
+77;Çılbır;1;default_photo.png
+78;Safranlı Pilavı;1;default_photo.png
+79;Kısır;1;default_photo.png
+80;Tarator;1;default_photo.png
+81;Mamalika;1;default_photo.png
+82;Seyhan Gölü;3;default_photo.png
+83;Nemrut Dağı;3;default_photo.png
+84;Frig Vadisi;3;default_photo.png
+85;Ağrı Dağı;3;default_photo.png
+86;Tavşan Dağı;3;default_photo.png
+87;Çubuk Çayı;3;default_photo.png
+88;Düden Şelalesi;3;default_photo.png
+89;Kaçkar Dağı;3;default_photo.png
+90;Altınkum Plajı;3;default_photo.png
+91;Kaz Dağları;3;default_photo.png
+92;Paşa Dağları;3;default_photo.png
+93;Şeytan Dağı;3;default_photo.png
+94;Süphen Dağı;3;default_photo.png
+95;Abant Gölü;3;default_photo.png
+96;Salda Gölü;3;default_photo.png
+97;Uludağ;3;default_photo.png
+98;Kaz Dağı;3;default_photo.png
+99;Yapraklı Büyük Yayla;3;default_photo.png
+100;Alaca Gölü;3;default_photo.png
+101;Pamukkale;3;default_photo.png
+102;Kerkük Dağı;3;default_photo.png
+103;Meriç Nehri;3;default_photo.png
+104;Hazar Gölü;3;default_photo.png
+105;Karasu Irmağı;3;default_photo.png
+106;Palandöken Dağları;3;default_photo.png
+107;İnönü Ovası;3;default_photo.png
+108;Fırat Nehri;3;default_photo.png
+109;Mavi Göl Kuzalan Şelalesi;3;default_photo.png
+110;Kökel Dağı;3;default_photo.png
+111;Cilo Buzulları;3;default_photo.png
+112;Orontes Nehri;3;default_photo.png
+113;Eğirdir Gölü;3;default_photo.png
+114;Tarsus Çayı;3;default_photo.png
+115;Haliç;3;default_photo.png
+116;Karaburun Yarım Adası;3;default_photo.png
+117;Arpaçay;3;default_photo.png
+118;Devrekani Çayı;3;default_photo.png
+119;Kızılırmak Nehri;3;default_photo.png
+120;Meriç Nehri;3;default_photo.png
+121;Mucur Çayı;3;default_photo.png
+122;Sapanca Gölü;3;default_photo.png
+123;Beyşehir Gölü;3;default_photo.png
+124;Gediz Nehri;3;default_photo.png
+125;Karakaya Barajı;3;default_photo.png
+126;Kuladokya;3;default_photo.png
+127;Yeşilgöz Obruğu;3;default_photo.png
+128;Midyat Ovası;3;default_photo.png
+129;Marmaris Ormanı;3;default_photo.png
+130;Malazgirt Ovası;3;default_photo.png
+131;Kapadokya;3;default_photo.png
+132;Hasan Dağı;3;default_photo.png
+133;Boztepe;3;default_photo.png
+134;Çamlıhemşin Yaylaları;3;default_photo.png
+135;Sakarya Nehri;3;default_photo.png
+136;Kızılırmak Deltası;3;default_photo.png
+137;Botan Vadisi;3;default_photo.png
+138;Hamsilos Koyu;3;default_photo.png
+139;Balıklı Çermik/Kaplıca;3;default_photo.png
+140;Ergene Nehri;3;default_photo.png
+141;Zile Çayı;3;default_photo.png
+142;Zigana Dağları;3;default_photo.png
+143;Munzur Dağları;3;default_photo.png
+144;Balıklı Göl;3;default_photo.png
+145;Ulubey Kanyonu;3;default_photo.png
+146;Van Gölü;3;default_photo.png
+147;Bozok Yaylası;3;default_photo.png
+148;Kozlu Plajı;3;default_photo.png
+149;Tuz Gölü;3;default_photo.png
+150;Çoruh Nehri;3;default_photo.png
+151;Hacıbaba Dağı;3;default_photo.png
+152;Çalışkan Dağları;3;default_photo.png
+153;Dicle Nehri;3;default_photo.png
+154;Cudi Dağı;3;default_photo.png
+155;Amasra Koyu;3;default_photo.png
+156;Çıldır Ovası;3;default_photo.png
+157;Aras Nehri;3;default_photo.png
+158;Armutlu Kaplıcaları;3;default_photo.png
+159;Küre Dağları;3;default_photo.png
+160;Azez Ovası;3;default_photo.png
+161;Ceyhan Nehri;3;default_photo.png
+162;Melen Çayı;3;default_photo.png
+163;Taş Köprü;2;default_photo.png
+164;Arsameia Antik Kenti;2;default_photo.png
+165;Yedikapılar Manastırı;2;default_photo.png
+166;İshak Paşa Sarayı;2;default_photo.png
+167;Kral Kaya Mezarları;2;default_photo.png
+168;Anıtkabir;2;default_photo.png
+169;Olympos Antik Kenti;2;default_photo.png
+170;İskenderpaşa Camii;2;default_photo.png
+171;Apollon Tapınağı;2;default_photo.png
+172;Aigai Antik Kenti;2;default_photo.png
+173;Şeyh Edebali Türbesi;2;default_photo.png
+174;Kuba Kümbet Kalıntıları;2;default_photo.png
+175;Ahlat Mezar Taşları;2;default_photo.png
+176;Mudurnu Evleri;2;default_photo.png
+177;Kibyra Antik Kenti;2;default_photo.png
+178;Muradiye Külliyesi;2;default_photo.png
+179;Aynalı Çarşı;2;default_photo.png
+180;Sultan Süleyman Cami;2;default_photo.png
+181;Hattuşaş Antik Kenti;2;default_photo.png
+182;Hierapolis Antik Kenti;2;default_photo.png
+183;Malabadi Köprüsü;2;default_photo.png
+184;Selimiye Camisi;2;default_photo.png
+185;İsmet Paşa Köprüsü;2;default_photo.png
+186;Mama Hatun Türbesi;2;default_photo.png
+187;Çifte Minareli Medrese;2;default_photo.png
+188;Porsuk Çayı;2;default_photo.png
+189;Zeugma Mozaik Müzesi;2;default_photo.png
+190;Giresun Kalesi;2;default_photo.png
+191;Karaca Mağarası;2;default_photo.png
+192;Kato Dağı;2;default_photo.png
+193;St.Pierre Kalesi;2;default_photo.png
+194;Aksu Antik Kenti;2;default_photo.png
+195;Tarsus Şelalesi;2;default_photo.png
+196;Topkapı Sarayı;2;default_photo.png
+197;Efes Antik Kenti;2;default_photo.png
+198;Ani Harabeleri;2;default_photo.png
+199;Nasrullah Cami;2;default_photo.png
+200;Gevaş Selçuklu Cami;2;default_photo.png
+201;Büyükdere;2;default_photo.png
+202;Cacabey Medresesi;2;default_photo.png
+203;Kartepe;2;default_photo.png
+204;Çatalhöyük Neolitik Antik Kenti;2;default_photo.png
+205;Aizanoi Antik Kenti;2;default_photo.png
+206;Aslantepe Höyüğü;2;default_photo.png
+207;Sardes Antik Kenti;2;default_photo.png
+208;Kahramanmaraş Kalesi;2;default_photo.png
+209;Deyrulzafaran Manastırı;2;default_photo.png
+210;Fethiye Antik Tiyatrosu;2;default_photo.png
+211;Malazgirt Kalesi;2;default_photo.png
+212;Ürgüp;2;default_photo.png
+213;Gümüşler Manastırı;2;default_photo.png
+214;Taşbaşı Kültür Merkezi;2;default_photo.png
+215;Zil Kale;2;default_photo.png
+216;Maşukiye;2;default_photo.png
+217;Atatürk Anıtı;2;default_photo.png
+218;Pervari Taş Köprü;2;default_photo.png
+219;Aşıklar Tepesi;2;default_photo.png
+220;Divriği Ulu Cami;2;default_photo.png
+221;Rakoczi Müzesi;2;default_photo.png
+222;Niksar Kalesi;2;default_photo.png
+223;Sümela Manastırı;2;default_photo.png
+224;Tunceli Kalesi;2;default_photo.png
+225;Göbeklitepe;2;default_photo.png
+226;Blaundus Antik Kenti;2;default_photo.png
+227;Akdamar Adası;2;default_photo.png
+228;Hattuşaş Antik Kenti;2;default_photo.png
+229;Gökçebey Antik Kenti;2;default_photo.png
+230;Yüksek Kilise;2;default_photo.png
+231;Bayburt Kalesi;2;default_photo.png
+232;Görmel Köprüsü;2;default_photo.png
+233;Delice Irmağı;2;default_photo.png
+234;Hasankeyf;2;default_photo.png
+235;Cizre Kalesi;2;default_photo.png
+236;Amasra Antik Kenti;2;default_photo.png
+237;Çıldır Gölü;2;default_photo.png
+238;Iğdır Kalesi;2;default_photo.png
+239;Termal Kaplıcaları;2;default_photo.png
+240;Safranbolu Evleri;2;default_photo.png
+241;Kilis Kalesi;2;default_photo.png
+242;Zorkun Yaylası;2;default_photo.png
+243;Antik Su Kemerleri;2;default_photo.png
+244;Laodikya;2;default_photo.png
+245;Etnografya Müzesi;2;default_photo.png
+246;Yaprak Sarma;1;default_photo.png
+247;Karnıyarık;1;default_photo.png
+248;Pastırma;1;default_photo.png
+249;1;4;default_photo.png
+250;2;4;default_photo.png
+251;3;4;default_photo.png
+252;4;4;default_photo.png
+253;5;4;default_photo.png
+254;6;4;default_photo.png
+255;7;4;default_photo.png
+256;8;4;default_photo.png
+257;9;4;default_photo.png
+258;10;4;default_photo.png
+259;11;4;default_photo.png
+260;12;4;default_photo.png
+261;13;4;default_photo.png
+262;14;4;default_photo.png
+263;15;4;default_photo.png
+264;16;4;default_photo.png
+265;17;4;default_photo.png
+266;18;4;default_photo.png
+267;19;4;default_photo.png
+268;20;4;default_photo.png
+269;21;4;default_photo.png
+270;22;4;default_photo.png
+271;23;4;default_photo.png
+272;24;4;default_photo.png
+273;25;4;default_photo.png
+274;26;4;default_photo.png
+275;27;4;default_photo.png
+276;28;4;default_photo.png
+277;29;4;default_photo.png
+278;30;4;default_photo.png
+279;31;4;default_photo.png
+280;32;4;default_photo.png
+281;33;4;default_photo.png
+282;34;4;default_photo.png
+283;35;4;default_photo.png
+284;36;4;default_photo.png
+285;37;4;default_photo.png
+286;38;4;default_photo.png
+287;39;4;default_photo.png
+288;40;4;default_photo.png
+289;41;4;default_photo.png
+290;42;4;default_photo.png
+291;43;4;default_photo.png
+292;44;4;default_photo.png
+293;45;4;default_photo.png
+294;46;4;default_photo.png
+295;47;4;default_photo.png
+296;48;4;default_photo.png
+297;49;4;default_photo.png
+298;50;4;default_photo.png
+299;51;4;default_photo.png
+300;52;4;default_photo.png
+301;53;4;default_photo.png
+302;54;4;default_photo.png
+303;55;4;default_photo.png
+304;56;4;default_photo.png
+305;57;4;default_photo.png
+306;58;4;default_photo.png
+307;59;4;default_photo.png
+308;60;4;default_photo.png
+309;61;4;default_photo.png
+310;62;4;default_photo.png
+311;63;4;default_photo.png
+312;64;4;default_photo.png
+313;65;4;default_photo.png
+314;66;4;default_photo.png
+315;67;4;default_photo.png
+316;68;4;default_photo.png
+317;69;4;default_photo.png
+318;70;4;default_photo.png
+319;71;4;default_photo.png
+320;72;4;default_photo.png
+321;73;4;default_photo.png
+322;74;4;default_photo.png
+323;75;4;default_photo.png
+324;76;4;default_photo.png
+325;77;4;default_photo.png
+326;78;4;default_photo.png
+327;79;4;default_photo.png
+328;80;4;default_photo.png
+329;81;4;default_photo.png

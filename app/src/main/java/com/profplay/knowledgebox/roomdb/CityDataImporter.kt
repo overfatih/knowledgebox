@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
+import com.profplay.knowledgebox.model.CityDetailCrossRef
 import com.profplay.knowledgebox.model.TypeOfCityDetail
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -44,14 +45,13 @@ object CityDetailsDataImporter {
         context.assets.open("city_detail.csv").bufferedReader().use { reader ->
             reader.readLines().drop(1).forEach { line -> // Başlık satırını atla
                 val tokens = line.split(";") // Ayırıcıyı doğru seçtiğinizden emin olun
-                if (tokens.size == 5) { // Beklenen sütun sayısı 5 olmalı
+                if (tokens.size == 4) { // Beklenen sütun: city_detail_id, feature, type_id, image
                     try {
                         val cityDetail = CityDetail(
                             cityDetailId = tokens[0].toInt(),
                             feature = tokens[1],
                             typeId = tokens[2].toInt(),
-                            image = tokens[3],
-                            plateNumber = tokens[4]
+                            image = tokens[3]
                         )
                         cityDetails.add(cityDetail)
                     } catch (e: Exception) {
@@ -94,6 +94,35 @@ object TypeOfCityDetailDataImporter {
 
         val insertedCount = typeOfCityDetailDao.insertAll(typeOfCityDetails)
         Log.d("TypeOfCityDetails", "Inserted $insertedCount typeOfCityDetails into Room")
+
+    }
+}
+
+object CityDetailCrossRefImporter {
+    suspend fun loadCityDetailCrossRefFromCsv(context: Context, cityDetailCrossRefDao: CityDetailCrossRefDao) {
+        val cityDetailCrossRefList = mutableListOf<CityDetailCrossRef>()
+
+        context.assets.open("city_detail_cross_ref.csv").bufferedReader().use { reader ->
+            reader.readLines().drop(1).forEach { line -> // Başlık satırını atla
+                val tokens = line.split(";") // Ayırıcıyı doğru seçtiğinizden emin olun
+                if (tokens.size == 2) { // Beklenen sütun sayısı city_id,city_detail_id
+                    try {
+                        val cityDetailCrossRef = CityDetailCrossRef(
+                            city_id = tokens[0].toInt(),
+                            city_detail_id = tokens[1].toInt()
+                        )
+                        cityDetailCrossRefList.add(cityDetailCrossRef)
+                    } catch (e: Exception) {
+                        Log.e("CityDetailCrossRefList", "Error parsing line: $line", e)
+                    }
+                } else {
+                    Log.e("CityDetailCrossRefList", "Invalid line format: $line")
+                }
+            }
+        }
+
+        val insertedCount = cityDetailCrossRefDao.insertAll(cityDetailCrossRefList)
+        Log.d("CityDetailCrossRefList", "Inserted $insertedCount cityDetailCrossRefList into Room")
 
     }
 }

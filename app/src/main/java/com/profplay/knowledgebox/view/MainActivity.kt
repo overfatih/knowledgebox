@@ -41,6 +41,7 @@ import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
 import com.profplay.knowledgebox.viewModel.MainViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.profplay.knowledgebox.model.CityDetail
 import com.profplay.knowledgebox.screen.QuestionScreen
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
 
@@ -143,15 +144,24 @@ class MainActivity : ComponentActivity() {
                                 }
                                 LaunchedEffect(cityIdString) {
                                     cityDetailViewModel.getCity(cityIdString?.toInt()?:1)
+                                    cityDetailViewModel.getCityWithDetails(cityIdString?.toInt()?:1)
                                 }
-                                val selectedCity = cityDetailViewModel.selectedCity.value
+                                /*
+                                LaunchedEffect(cityIdString) {
+                                    /*cityDetailViewModel.getCity(cityIdString?.toInt()?:1)*/
+                                    cityDetailViewModel.getDetailsByCity(cityIdString?.toInt()?:1)
+                                }
+
+
+
 
                                 LaunchedEffect(selectedCity.plateNumber){
-                                    cityDetailViewModel.getCityDetails(selectedCity.plateNumber)
-                                }
-                                val cityWithTypes = cityDetailViewModel.selectedCityDetails.value
+                                    cityDetailViewModel.getCityDetails(selectedCity.cityId)
+                                }*/
+                                val selectedCity = cityDetailViewModel.selectedCity.value
+                                val cityWithDetails = cityDetailViewModel.selectedCityWithDetails.value
 
-                                CityDetailsScreen(city = selectedCity, cityWithTypes = cityWithTypes)
+                                CityDetailsScreen(selectedCity, cityWithDetails)
                             }
                         }
                     }

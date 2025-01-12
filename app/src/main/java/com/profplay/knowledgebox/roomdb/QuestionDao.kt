@@ -13,12 +13,6 @@ interface QuestionDao {
     @Query("SELECT * FROM city WHERE plate_number != :excludePlateNumber ORDER BY RANDOM() LIMIT :limit")
     suspend fun getRandomCities(excludePlateNumber: String, limit: Int): List<City>
 
-    /*@Query("SELECT * FROM city_detail WHERE plate_number != :excludePlateNumber ORDER BY RANDOM() LIMIT :limit")
-    suspend fun getRandomCityDetails(excludePlateNumber: String, limit: Int): List<CityDetail>*/
-
-    @Query("SELECT * FROM city_detail WHERE type_id = :typeId AND plate_number != :excludePlateNumber ORDER BY RANDOM() LIMIT :limit")
-    suspend fun getRandomCityDetails(typeId: Int, excludePlateNumber: String, limit: Int): List<CityDetail>
-
     @Query("SELECT * FROM question_template WHERE category_id = :categoryId ORDER BY RANDOM() LIMIT 1")
     suspend fun getRandomTemplateByCategory(categoryId: Int): QuestionTemplate
 

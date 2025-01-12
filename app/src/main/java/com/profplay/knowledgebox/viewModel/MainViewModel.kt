@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.profplay.knowledgebox.roomdb.CityDataImporter.loadCitiesFromCsv
 import com.profplay.knowledgebox.roomdb.CityDatabase
+import com.profplay.knowledgebox.roomdb.CityDetailCrossRefImporter.loadCityDetailCrossRefFromCsv
 import com.profplay.knowledgebox.roomdb.CityDetailsDataImporter.loadCityDetailsFromCsv
 import com.profplay.knowledgebox.roomdb.QuestionTemplateDataImporter.loadQuestionTemplateFromCsv
 import com.profplay.knowledgebox.roomdb.TypeOfCityDetailDataImporter.loadTypeOfCityDetailFromCsv
@@ -26,7 +27,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         CityDatabase::class.java, name = "city_database",
     )
         /*.fallbackToDestructiveMigration()*/ // Tüm eski verileri silip yeniden oluşturur
-        .addMigrations(CityDatabase.migration1to2)
+        .addMigrations(CityDatabase.migration1to2, CityDatabase.migration2to3)
         .addCallback(callback)  // Callback ekliyoruz
         .build()
 
@@ -36,6 +37,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val cityDetailDao = db.cityDetailDao()
     private val typeOfCityDetailDao = db.typeOfCityDetailDao()
     private val questionTemplateDao = db.questionTemplateDao()
+    private val cityDetailCrossRefDao = db.cityDetailCrossRefDao()
 
     init {
 
@@ -49,6 +51,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             Log.d("init Message","delete all citydetails")*/
             loadCitiesFromCsv(application, cityDao)
             loadCityDetailsFromCsv(application, cityDetailDao)
+            loadCityDetailCrossRefFromCsv(application, cityDetailCrossRefDao)
             loadTypeOfCityDetailFromCsv(application, typeOfCityDetailDao)
             loadQuestionTemplateFromCsv(application, questionTemplateDao)
 

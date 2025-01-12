@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
+import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
@@ -28,7 +29,6 @@ data class City(
 
 @Entity(
     tableName = "city_detail",
-    indices = [Index("plate_number")], // Performans için indeks ekleyin
 )
 data class CityDetail(
     @PrimaryKey(autoGenerate = true)
@@ -44,8 +44,6 @@ data class CityDetail(
     @ColumnInfo(name = "image" )
     var image: String?,
 
-    @ColumnInfo(name = "plate_number") // Şehir plakası ile bağ
-    var plateNumber: String
 )
 
 @Entity(tableName = "type_of_city_detail")
@@ -66,4 +64,30 @@ data class CityWithType(
         entityColumn = "type_id"
     )
     val typeOfCityDetail: TypeOfCityDetail
+)
+
+@Entity(primaryKeys = ["city_id", "city_detail_id"], tableName = "city_detail_cross_ref")
+data class CityDetailCrossRef(
+    val city_id: Int,
+    val city_detail_id: Int
+)
+
+data class CityWithDetails(
+    @Embedded val city: City,
+    @Relation(
+        parentColumn = "city_id",
+        entityColumn = "city_detail_id",
+        associateBy = Junction(CityDetailCrossRef::class)
+    )
+    val details: List<CityDetail>
+)
+
+data class DetailWithCities(
+    @Embedded val detail: CityDetail,
+    @Relation(
+        parentColumn = "city_detail_id",
+        entityColumn = "city_id",
+        associateBy = Junction(CityDetailCrossRef::class)
+    )
+    val cities: List<City>
 )
