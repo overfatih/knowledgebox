@@ -40,8 +40,6 @@ import com.profplay.knowledgebox.viewModel.CityDetailViewModel
 import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
 import com.profplay.knowledgebox.viewModel.MainViewModel
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import com.profplay.knowledgebox.model.CityDetail
 import com.profplay.knowledgebox.screen.QuestionScreen
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
 
@@ -58,9 +56,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        //val cityDetail: CityDetail = CityDetail(type = "type", feature = "detailName", plateNumber = "45", image = null)
-        //val  city: City = City(plateNumber = "45", name = "Manisa", avatar = null)
-        //val cities = listOf<City>(city,city,city)
         setContent {
             val navController = rememberNavController()
             KnowledgeBoxTheme {
@@ -122,9 +117,6 @@ class MainActivity : ComponentActivity() {
                                 question?.let { q ->
                                     QuestionScreen(question = q) {
                                         questionViewModel.question.value = null
-                                        //questionViewModel.generateQuestion()
-
-
                                     }
 
                                 } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
@@ -146,18 +138,7 @@ class MainActivity : ComponentActivity() {
                                     cityDetailViewModel.getCity(cityIdString?.toInt()?:1)
                                     cityDetailViewModel.getCityWithDetails(cityIdString?.toInt()?:1)
                                 }
-                                /*
-                                LaunchedEffect(cityIdString) {
-                                    /*cityDetailViewModel.getCity(cityIdString?.toInt()?:1)*/
-                                    cityDetailViewModel.getDetailsByCity(cityIdString?.toInt()?:1)
-                                }
 
-
-
-
-                                LaunchedEffect(selectedCity.plateNumber){
-                                    cityDetailViewModel.getCityDetails(selectedCity.cityId)
-                                }*/
                                 val selectedCity = cityDetailViewModel.selectedCity.value
                                 val cityWithDetails = cityDetailViewModel.selectedCityWithDetails.value
 
@@ -168,13 +149,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        /*mainViewModel.cityList.value.forEach { cityList ->
-            // Şehir listesini işleyin
-            cityList.let {
-                Log.d("MainActivity", "Cities: $it")
-                // RecyclerView'e bağlama gibi işlemler
-            }
-        }*/
 
     }
 
@@ -186,8 +160,6 @@ class MainActivity : ComponentActivity() {
           // MainActivity'yi kapatıyoruz ki geri butonu ile tekrar açılmasın
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable

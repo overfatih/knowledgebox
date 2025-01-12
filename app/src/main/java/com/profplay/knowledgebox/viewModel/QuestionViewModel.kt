@@ -11,7 +11,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
 import com.profplay.knowledgebox.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class QuestionViewModel(application: Application) : AndroidViewModel(application)  {
     private val db = Room.databaseBuilder(
@@ -22,7 +21,6 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     private val cityDao = db.cityDao()
     private val cityDetailDao = db.cityDetailDao()
 
-    //val question = mutableStateOf<Question>(Question(questionText = "",options = listOf(),correctAnswer = ""))
     val question = mutableStateOf<Question?>(null)
 
     fun generateQuestion() {

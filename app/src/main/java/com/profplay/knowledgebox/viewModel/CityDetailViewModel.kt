@@ -1,19 +1,14 @@
 package com.profplay.knowledgebox.viewModel
 
 import android.app.Application
-import androidx.compose.runtime.Composer.Companion.Empty
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Database
 import androidx.room.Room
 import com.profplay.knowledgebox.model.City
 import com.profplay.knowledgebox.model.CityDetail
-import com.profplay.knowledgebox.model.CityWithDetails
 import com.profplay.knowledgebox.model.CityWithType
-import com.profplay.knowledgebox.model.TypeOfCityDetail
 import com.profplay.knowledgebox.roomdb.CityDatabase
-import com.profplay.knowledgebox.roomdb.TypeOfCityDetailDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -62,7 +57,6 @@ class CityDetailViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
     fun getCityWithDetails(cityId: Int){
-        //selectedCityWithDetails.value = emptyList()
         viewModelScope.launch(Dispatchers.IO){
             val cityWithDetails = cityDao.getCityWithDetails(cityId)
             cityWithDetails?.let() {

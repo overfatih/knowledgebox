@@ -23,12 +23,5 @@ class KnowledgePoolViewModel(application: Application) : AndroidViewModel(applic
         viewModelScope.launch (Dispatchers.IO) {
             cityList.value = cityDao.getAllCities()
         }
-        /*
-        // Veri yükleme işlemi
-        _cityList.value = listOf(
-            City(cityId = 1, name = "Ankara",plateNumber = "6",avatar = "ankara.jpeg"),
-            City(cityId = 1, name = "İstanbul",plateNumber = "34",avatar = "istanbul.jpeg")
-        )
-        */
     }
 }
