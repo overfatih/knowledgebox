@@ -2,10 +2,12 @@ package com.profplay.knowledgebox.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.collection.mutableIntSetOf
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -40,8 +42,12 @@ import com.profplay.knowledgebox.viewModel.CityDetailViewModel
 import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
 import com.profplay.knowledgebox.viewModel.MainViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.profplay.knowledgebox.screen.QuestionScreen
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
+import androidx.compose.runtime.setValue
+import androidx.room.util.getColumnIndex
 
 
 class MainActivity : ComponentActivity() {
@@ -107,18 +113,27 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
                             }
-                            composable("question_screen"){
-                                if(questionViewModel.question.value == null) {
+
+                            composable("question_screen") {
+                                if (questionViewModel.question.value == null) {
                                     questionViewModel.generateQuestion()
                                 }
                                 val question by remember {
                                     questionViewModel.question
                                 }
+                                val totalAnswers by remember {
+                                    questionViewModel.totalAnswers
+                                }
+                                val correntAnswers by remember {
+                                    questionViewModel.correctAnswers
+                                }
+
                                 question?.let { q ->
-                                    QuestionScreen(question = q) {
+                                    QuestionScreen(question = q, correctAnswers=correntAnswers,
+                                        totalAnswers=totalAnswers) { selectedOptionIndex ->
+                                        questionViewModel.calculateScore(selectedOptionIndex)
                                         questionViewModel.question.value = null
                                     }
-
                                 } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
                             }
                             composable("setting_screen"){

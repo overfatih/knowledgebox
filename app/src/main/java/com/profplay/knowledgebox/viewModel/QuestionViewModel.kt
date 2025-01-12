@@ -3,6 +3,7 @@ package com.profplay.knowledgebox.viewModel
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.profplay.knowledgebox.model.Question
@@ -22,6 +23,8 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     private val cityDetailDao = db.cityDetailDao()
 
     val question = mutableStateOf<Question?>(null)
+    val correctAnswers =  mutableStateOf<Int>(0)
+    val totalAnswers =  mutableStateOf<Int>(0)
 
     fun generateQuestion() {
         if (question.value != null) return
@@ -82,6 +85,14 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                 options = options,
                 correctAnswer = correctAnswer
             )
+        }
+    }
+
+    fun calculateScore(selectedOptionIndex:Int?){
+        selectedOptionIndex?.let {
+            val selectedAnswer = question.value?.let { it.options[selectedOptionIndex] }?:""
+            if (selectedAnswer == question.value?.correctAnswer) {correctAnswers.value++}
+            totalAnswers.value++
         }
     }
 }
