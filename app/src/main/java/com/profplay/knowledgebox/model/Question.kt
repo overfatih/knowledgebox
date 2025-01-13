@@ -25,3 +25,9 @@ data class QuestionTemplate(
     @ColumnInfo(name= "make_a_question_with_the_city_name")
     val makeAQuestionWithTheCityName: Int
 )
+
+data class PassedQuestion(
+    val cityDetailId: Int,
+    val isCityNameOnQuestion: Int
+)
+

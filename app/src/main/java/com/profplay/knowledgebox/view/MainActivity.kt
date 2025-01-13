@@ -2,12 +2,10 @@ package com.profplay.knowledgebox.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.collection.mutableIntSetOf
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -121,6 +119,7 @@ class MainActivity : ComponentActivity() {
                                 val question by remember {
                                     questionViewModel.question
                                 }
+
                                 val totalAnswers by remember {
                                     questionViewModel.totalAnswers
                                 }
@@ -129,8 +128,12 @@ class MainActivity : ComponentActivity() {
                                 }
 
                                 question?.let { q ->
-                                    QuestionScreen(question = q, correctAnswers=correntAnswers,
-                                        totalAnswers=totalAnswers) { selectedOptionIndex ->
+                                    QuestionScreen(
+                                        question = q,
+                                        correctAnswers=correntAnswers,
+                                        totalAnswers=totalAnswers,
+                                        )
+                                    { selectedOptionIndex ->
                                         questionViewModel.calculateScore(selectedOptionIndex)
                                         questionViewModel.question.value = null
                                     }
