@@ -28,6 +28,7 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     val totalAnswers =  mutableStateOf<Int>(0)
     val cityDetailId = mutableStateOf<Int>(0)
     val isCityNameOnQuestion = mutableStateOf<Int?>(null)
+    val cityDetailImageLink = mutableStateOf<String?>("")
 
     fun generateQuestion() {
         if (question.value != null) return
@@ -59,7 +60,7 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                 generateQuestion() // Tekrar yeni bir soru oluştur
                 return@launch
             }
-
+            cityDetailImageLink.value = cityDetail.image
             val cities = cityDetailDao.getDetailWithCities(cityDetail.cityDetailId).cities
             if (cities.isEmpty()) {
                 Log.e("Error", "No cities found for cityDetailId = ${cityDetail.cityDetailId}")

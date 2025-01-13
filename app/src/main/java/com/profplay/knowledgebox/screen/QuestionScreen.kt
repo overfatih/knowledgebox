@@ -19,28 +19,26 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.profplay.knowledgebox.model.Question
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.profplay.knowledgebox.model.PassedQuestion
-import com.profplay.knowledgebox.viewModel.QuestionViewModel
+import coil.compose.AsyncImage
 
 @Composable
 fun QuestionScreen(question: Question,
                    correctAnswers:  Int,
                    totalAnswers:  Int,
+                   cityDetailImageLink: String?,
                    onNextQuestion: (selectedOptionIndex:Int) -> Unit) {
 
     var selectedOptionIndex by remember { mutableStateOf<Int?>(null) }
@@ -54,7 +52,16 @@ fun QuestionScreen(question: Question,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Question Text and Options
-        question?.let { q ->
+        Log.d("cityDetailImageLink",cityDetailImageLink?:"")
+        question.let { q ->
+            cityDetailImageLink?.let { avatar->
+                val drawableUri = "android.resource://${LocalContext.current.packageName}/drawable/${avatar}"
+                AsyncImage(
+                    model = drawableUri,
+                    contentDescription = "Soruya ait resim.",
+                    modifier = Modifier.padding(8.dp,16.dp).fillMaxWidth().height(200.dp)
+                )
+            }
             Text(
                 text = q.questionText,
                 style = MaterialTheme.typography.headlineMedium,

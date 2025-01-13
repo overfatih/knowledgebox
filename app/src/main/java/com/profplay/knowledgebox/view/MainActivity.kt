@@ -126,12 +126,16 @@ class MainActivity : ComponentActivity() {
                                 val correntAnswers by remember {
                                     questionViewModel.correctAnswers
                                 }
+                                val cityDetailImageLink by remember {
+                                    questionViewModel.cityDetailImageLink
+                                }
 
                                 question?.let { q ->
                                     QuestionScreen(
                                         question = q,
                                         correctAnswers=correntAnswers,
                                         totalAnswers=totalAnswers,
+                                        cityDetailImageLink=cityDetailImageLink
                                         )
                                     { selectedOptionIndex ->
                                         questionViewModel.calculateScore(selectedOptionIndex)
