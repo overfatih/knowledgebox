@@ -1,7 +1,11 @@
 package com.profplay.knowledgebox.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -35,21 +39,22 @@ import com.profplay.knowledgebox.screen.CityDetailsScreen
 import com.profplay.knowledgebox.screen.KnowledgePoolScreen
 import com.profplay.knowledgebox.screen.MainScreen
 import com.profplay.knowledgebox.screen.SettingScreen
+import com.profplay.knowledgebox.screen.QuestionScreenWithSTTScreen
 import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
 import com.profplay.knowledgebox.viewModel.CityDetailViewModel
 import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
 import com.profplay.knowledgebox.viewModel.MainViewModel
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.profplay.knowledgebox.screen.QuestionScreen
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
-import androidx.compose.runtime.setValue
-import androidx.room.util.getColumnIndex
-
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import android.Manifest
 
 class MainActivity : ComponentActivity() {
-
+    private val REQUEST_CODE_RECORD_AUDIO = 1
     internal lateinit var myAuth: FirebaseAuth
 
     private val mainViewModel: MainViewModel by viewModels<MainViewModel> ()
@@ -57,6 +62,7 @@ class MainActivity : ComponentActivity() {
     private val cityDetailViewModel: CityDetailViewModel by viewModels<CityDetailViewModel> ()
     private val questionViewModel: QuestionViewModel by viewModels<QuestionViewModel> ()
 
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -129,22 +135,73 @@ class MainActivity : ComponentActivity() {
                                 val cityDetailImageLink by remember {
                                     questionViewModel.cityDetailImageLink
                                 }
-
                                 question?.let { q ->
                                     QuestionScreen(
                                         question = q,
                                         correctAnswers=correntAnswers,
                                         totalAnswers=totalAnswers,
-                                        cityDetailImageLink=cityDetailImageLink
+                                        cityDetailImageLink=cityDetailImageLink,
+                                        questionViewModel= questionViewModel,
+                                        onNextQuestion = {selectedOptionIndex->
+                                            questionViewModel.calculateScore(selectedOptionIndex, q.correctAnswer)
+                                            lifecycleScope.launch {
+                                                kotlinx.coroutines.delay(2000)
+                                                questionViewModel.question.value = null
+                                            }
+                                        }
                                         )
-                                    { selectedOptionIndex ->
-                                        questionViewModel.calculateScore(selectedOptionIndex)
-                                        questionViewModel.question.value = null
-                                    }
+
                                 } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
                             }
                             composable("setting_screen"){
                                 SettingScreen()
+                            }
+                            composable("question_screen_with_sst_screen"){
+                                if (questionViewModel.question.value == null) {
+                                    questionViewModel.generateQuestion()
+                                }
+                                val question by remember {
+                                    questionViewModel.question
+                                }
+
+                                val totalAnswers by remember {
+                                    questionViewModel.totalAnswers
+                                }
+                                val correntAnswers by remember {
+                                    questionViewModel.correctAnswers
+                                }
+                                val cityDetailImageLink by remember {
+                                    questionViewModel.cityDetailImageLink
+                                }
+                                question?.let { q ->
+                                    QuestionScreenWithSTTScreen(
+                                        question = q,
+                                        correctAnswers=correntAnswers,
+                                        totalAnswers=totalAnswers,
+                                        cityDetailImageLink=cityDetailImageLink,
+                                        questionViewModel= questionViewModel,
+                                        onAnswerProvided = { spokenAnswer ->
+                                            Log.d("STT Answer", "Kullanıcı Cevabı: $spokenAnswer")
+                                            // Kullanıcının cevabını doğru cevap ile karşılaştırabilirsiniz.
+                                            Log.d("DogruCevap",question!!.correctAnswer)
+                                            if(question!!.correctAnswer.trim().lowercase()==spokenAnswer.trim().lowercase()){
+                                                questionViewModel.onCorrectAnswer()
+
+                                            }else{
+                                                questionViewModel.onWrongAnswer(q.correctAnswer)
+                                            }
+
+                                        },
+                                        onNextQuestion = {selectedOptionIndex, answer->
+                                            questionViewModel.calculateScore(selectedOptionIndex,answer)
+                                            lifecycleScope.launch {
+                                                kotlinx.coroutines.delay(2000)
+                                                questionViewModel.question.value = null
+                                            }
+                                        }
+                                    )
+
+                                } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
                             }
                             composable("city_details_screen/{cityId}",
                                 arguments = listOf(
@@ -171,7 +228,19 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        // Mikrofon izni kontrolü
+        checkAudioPermission()
 
+    }
+    private fun checkAudioPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                REQUEST_CODE_RECORD_AUDIO
+            )
+        }
     }
 
     private fun navigateToLoginActivity() {

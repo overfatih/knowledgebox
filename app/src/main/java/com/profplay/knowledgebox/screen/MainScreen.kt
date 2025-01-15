@@ -51,7 +51,7 @@ fun MainScreen(name: String, navController: NavController) {
                 .padding(bottom = 50.dp)
             ) {
             MainButton("Knowledge Pool", Icons.Filled.List){navController.navigate("knowledge_pool_screen")}
-            MainButton("Game",Icons.Filled.PlayArrow){ navController.navigate("question_screen") }
+            MainButton("Game",Icons.Filled.PlayArrow){navController.navigate("question_screen")}
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
@@ -66,7 +66,7 @@ fun MainScreen(name: String, navController: NavController) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton(" ", Icons.Filled.Favorite){ }
+            MainButton(" ", Icons.Filled.Favorite){ navController.navigate("question_screen_with_sst_screen") }
             MainButton("Leader Table", Icons.Filled.Star){ }
         }
     }

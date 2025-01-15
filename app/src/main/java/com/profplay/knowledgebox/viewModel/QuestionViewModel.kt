@@ -2,16 +2,24 @@ package com.profplay.knowledgebox.viewModel
 
 
 import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.profplay.knowledgebox.model.Question
 import kotlinx.coroutines.launch
 import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
+import com.profplay.knowledgebox.helper.SoundEffectManager
+import com.profplay.knowledgebox.helper.TextToSpeechHelper
 import com.profplay.knowledgebox.model.PassedQuestion
 import com.profplay.knowledgebox.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.math.exp
 
 class QuestionViewModel(application: Application) : AndroidViewModel(application)  {
     private val db = Room.databaseBuilder(
@@ -22,6 +30,14 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     private val cityDao = db.cityDao()
     private val cityDetailDao = db.cityDetailDao()
 
+    private val ttsHelper: TextToSpeechHelper by lazy {
+        TextToSpeechHelper(application.applicationContext)
+    }
+
+    private val soundManager: SoundEffectManager by lazy {
+        SoundEffectManager(application.applicationContext)
+    }
+
     val passedQuestionList = mutableSetOf<PassedQuestion>()
     val question = mutableStateOf<Question?>(null)
     val correctAnswers =  mutableStateOf<Int>(0)
@@ -29,6 +45,11 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     val cityDetailId = mutableStateOf<Int>(0)
     val isCityNameOnQuestion = mutableStateOf<Int?>(null)
     val cityDetailImageLink = mutableStateOf<String?>("")
+
+    init {
+        // TTS ve ses yöneticisini başlatabilirsiniz
+        ttsHelper.init { }
+    }
 
     fun generateQuestion() {
         if (question.value != null) return
@@ -87,10 +108,15 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                 options = options,
                 correctAnswer = correctAnswer
             )
+            withContext(Dispatchers.Main) {
+                val optionText = question.value?.options?.joinToString(", ")
+                //speak("${question.value?.questionText}, Şıklar: $optionText") {}
+            }
+
         }
     }
 
-    fun calculateScore(selectedOptionIndex:Int?){
+    fun calculateScore(selectedOptionIndex:Int?,answer:String){
         selectedOptionIndex?.let {
             val selectedAnswer = question.value?.let { it.options[selectedOptionIndex] }?:""
             if (selectedAnswer == question.value?.correctAnswer) {
@@ -104,10 +130,78 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                         )
                     )
                 }
+                onCorrectAnswer()
             }
+            else{ onWrongAnswer(answer) }
             totalAnswers.value++
             Log.d("PassedSize",passedQuestionList.size.toString())
         }
     }
+
+    fun onCorrectAnswer() {
+        soundManager.playSound("correct")
+        ttsHelper.speak("Tebrikler!"){}
+    }
+
+    fun speak(message: String, function: () -> Unit) {
+        ttsHelper.speak(message = message){function()}
+    }
+
+    fun speakQueue(message: String) {
+        ttsHelper.speakQueue(message)
+    }
+
+    fun onWrongAnswer(answer:String) {
+        soundManager.playSound("wrong")
+        ttsHelper.speak("Üzgünüm. Yanlış Cevap! Doğrusu: ${answer} olacaktı."){}
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        ttsHelper.release()
+        soundManager.release()
+    }
+
+    fun repeatQuestionWithSTT(context: Context, question: Question, onResult: (String) -> Unit) {
+        val optionsText = question.options.joinToString(", ")
+        viewModelScope.launch(Dispatchers.Main) {
+            speak("Anlaşılmadı: ${question.questionText}. Şıklar: $optionsText") {
+
+                ttsHelper.startSpeechRecognition(
+                    context = context,
+                    onResult = { spokenAnswer ->
+                        Log.d("onResult","onResult")
+                        onResult(spokenAnswer) // Kullanıcının sesli yanıtını işle
+
+                    },
+                    onError = {
+                        Log.d("onError","onError")
+                        // Hata durumunda yeniden deneme
+                        //repeatQuestionWithSTT(context, question, onResult)
+                    }
+                )
+            }
+
+        }
+    }
+
+    fun handleSpokenAnswer(spokenAnswer: String, correctAnswer: String, onNextQuestion: () -> Unit) {
+        val normalizedAnswer = spokenAnswer.lowercase().trim()
+        val expectedAnswer = correctAnswer.lowercase().trim()
+
+        if (normalizedAnswer == expectedAnswer) {
+            onCorrectAnswer()
+            onNextQuestion() // Doğru cevap verdi, bir sonraki soruya geç
+        } else {
+            onWrongAnswer("Bir dahaki sefere")
+            // Yanlış cevap verdi, kullanıcıya tekrar hakkı tanıyabilirsiniz
+        }
+    }
+
+
+
+
+
 }
+
 

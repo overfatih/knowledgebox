@@ -43,60 +43,21 @@ import coil.compose.AsyncImage
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
 
 @Composable
-fun QuestionScreen(question: Question,
-                   correctAnswers:  Int,
-                   totalAnswers:  Int,
-                   cityDetailImageLink: String?,
-                   questionViewModel: QuestionViewModel,
-                   onNextQuestion: (selectedOptionIndex: Int) -> Unit) {
+fun QuestionScreenWithSTTScreen(question: Question,
+                                correctAnswers:  Int,
+                                totalAnswers:  Int,
+                                cityDetailImageLink: String?,
+                                questionViewModel: QuestionViewModel,
+                                onNextQuestion: (selectedOptionIndex: Int, answer:String) -> Unit,
+                                onAnswerProvided: (String) -> Unit) {
 
     var selectedOptionIndex by remember { mutableStateOf<Int?>(null) }
     var showResult by remember { mutableStateOf(false) }
-    var isRetrying by remember { mutableStateOf(false) } // Tekrar okuma durumu
-
     var isListening by remember { mutableStateOf(false) } // Mikrofon durumu
     var ttsCompleted by remember { mutableStateOf(false) } // TTS okuma tamamlandı mı?
 
     val context = LocalContext.current
-
-
-    // Kullanıcının sesli yanıtını işleme
-    fun handleSpokenAnswer(spokenAnswer: String) {
-
-        val normalizedAnswer = spokenAnswer.replace("\\s+".toRegex(), "").trim().lowercase()
-        val correctAnswer = question.correctAnswer.replace("\\s+".toRegex(), "").trim().lowercase()
-        //1 -> tam eşleşme        2 -> kapsıyor mu?        3 -> %80'den fazla benzerlik
-        val matchedIndex = question.options.filter { option ->
-            option.trim().lowercase().replace("\\s+".toRegex(), "") == normalizedAnswer ||
-                    normalizedAnswer.contains(
-                        option.trim().lowercase().replace("\\s+".toRegex(), "")
-                    ) ||
-                    calculateSimilarity(
-                        normalizedAnswer,
-                        (option.trim().lowercase().replace("\\s+".toRegex(), ""))
-                    ) >= 80
-        }.firstOrNull()?.let { question.options.indexOf(it) } ?: -1
-        if (matchedIndex != -1) {
-            selectedOptionIndex = matchedIndex
-            showResult = true
-            val isCorrect = when {
-                correctAnswer == normalizedAnswer -> matchedIndex
-                normalizedAnswer.contains(correctAnswer) -> matchedIndex
-                calculateSimilarity(normalizedAnswer, correctAnswer) >= 80 -> matchedIndex
-                else -> -1
-            }
-            if (isCorrect != -1) {
-                Log.d("AnswerCheck", "Correct Answer!")
-            } else {
-                Log.d("AnswerCheck", "Wrong Answer!")
-            }
-        } else {
-            Log.d("AnswerCheck", "No match found for spoken answer.")
-            isRetrying = true
-            showResult = false
-        }
-    }
-
+    val activity = context as Activity
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -106,7 +67,7 @@ fun QuestionScreen(question: Question,
                 ?.firstOrNull()
 
             if (!spokenText.isNullOrEmpty()) {
-                handleSpokenAnswer(spokenText) // Gelen cevabı işleme fonksiyonuna gönderiyoruz.
+                onAnswerProvided(spokenText) // Gelen cevabı işleme fonksiyonuna gönderiyoruz.
                 isListening = false // Mikrofonu kapat
             }
         }
@@ -122,12 +83,9 @@ fun QuestionScreen(question: Question,
     // Mikrofonu TTS tamamlandığında otomatik olarak başlat
     LaunchedEffect(ttsCompleted) {
         if (ttsCompleted && !isListening) {
-            Log.d("ttsCompleted", ttsCompleted.toString())
+            Log.d("ttsCompleted",ttsCompleted.toString())
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(
-                    RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-                )
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, "tr-TR")
                 putExtra(RecognizerIntent.EXTRA_PROMPT, "Cevabınızı söyleyin")
             }
@@ -147,15 +105,14 @@ fun QuestionScreen(question: Question,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Question Text and Options
-        Log.d("cityDetailImageLink", cityDetailImageLink ?: "")
+        Log.d("cityDetailImageLink",cityDetailImageLink?:"")
         question.let { q ->
-            cityDetailImageLink?.let { avatar ->
-                val drawableUri =
-                    "android.resource://${LocalContext.current.packageName}/drawable/${avatar}"
+            cityDetailImageLink?.let { avatar->
+                val drawableUri = "android.resource://${LocalContext.current.packageName}/drawable/${avatar}"
                 AsyncImage(
                     model = drawableUri,
                     contentDescription = "Soruya ait resim.",
-                    modifier = Modifier.padding(8.dp, 16.dp).fillMaxWidth().height(200.dp)
+                    modifier = Modifier.padding(8.dp,16.dp).fillMaxWidth().height(200.dp)
                 )
             }
             Text(
@@ -169,8 +126,8 @@ fun QuestionScreen(question: Question,
                 val backgroundColor = when {
                     selectedOptionIndex == null -> Color.Blue
                     selectedOptionIndex == index && option == q.correctAnswer -> Color.Green
-                    selectedOptionIndex == index && option != q.correctAnswer -> Color.Red
-                    option == q.correctAnswer -> Color(red = 255, green = 165, blue = 0)
+                    selectedOptionIndex == index -> Color.Red
+                    option == q.correctAnswer -> Color.Green
                     else -> Color.Gray
                 }
                 Button(
@@ -192,36 +149,21 @@ fun QuestionScreen(question: Question,
                     )
                 }
             }
-
-            if (isRetrying) {
-                isListening = true
-                ttsCompleted = true // TTS tamamlandığında güncelle
-                // Soruyu tekrar okuma ve mikrofonu açma
-                LaunchedEffect(Unit) {
-                    questionViewModel.repeatQuestionWithSTT(context, question) { spokenAnswer ->
-                        handleSpokenAnswer(spokenAnswer)
-                    }
-                }
-                isRetrying = false
-            }
-
             if (showResult) {
-                Log.d("selectedOptionIndex", selectedOptionIndex.toString())
-                Log.d("Scores", "${totalAnswers}:${correctAnswers}")
+                Log.d("selectedOptionIndex",selectedOptionIndex.toString())
+                Log.d("Scores","${totalAnswers}:${correctAnswers}")
                 showResult = false
-                selectedOptionIndex?.let { onNextQuestion(it) }
-
+                onNextQuestion(selectedOptionIndex?:-1, q.correctAnswer)
             }
 
         } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
         // Progress Bar
         Spacer(modifier = Modifier.height(24.dp))
-        ProgressBar(correctAnswers = correctAnswers, totalAnswers = totalAnswers)
+        ProgressBari(correctAnswers = correctAnswers, totalAnswers = totalAnswers)
     }
 }
-
 @Composable
-fun ProgressBar(correctAnswers: Int, totalAnswers: Int) {
+fun ProgressBari(correctAnswers: Int, totalAnswers: Int) {
     val progress = if (totalAnswers > 0) correctAnswers / totalAnswers.toFloat() else 0.5f
     val incorrectProgress = 1f - progress
 
@@ -250,29 +192,4 @@ fun ProgressBar(correctAnswers: Int, totalAnswers: Int) {
     }
 }
 
-// Benzerlik oranını hesaplayan fonksiyon (örnek olarak editDistance kullanılıyor)
-fun calculateSimilarity(answer: String, correctAnswer: String): Int {
-    val distance = getEditDistance(answer, correctAnswer)
-    val maxLength = maxOf(answer.length, correctAnswer.length)
-    return if (maxLength == 0) 100 else ((1 - distance.toDouble() / maxLength) * 100).toInt()
-}
-
-// Levenshtein mesafesini hesaplayan fonksiyon
-fun getEditDistance(a: String, b: String): Int {
-    val dp = Array(a.length + 1) { IntArray(b.length + 1) }
-
-    for (i in 0..a.length) dp[i][0] = i
-    for (j in 0..b.length) dp[0][j] = j
-
-    for (i in 1..a.length) {
-        for (j in 1..b.length) {
-            dp[i][j] = if (a[i - 1] == b[j - 1]) {
-                dp[i - 1][j - 1]
-            } else {
-                minOf(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
-            }
-        }
-    }
-    return dp[a.length][b.length]
-}
 
