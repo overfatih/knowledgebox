@@ -157,51 +157,7 @@ class MainActivity : ComponentActivity() {
                                 SettingScreen()
                             }
                             composable("question_screen_with_sst_screen"){
-                                if (questionViewModel.question.value == null) {
-                                    questionViewModel.generateQuestion()
-                                }
-                                val question by remember {
-                                    questionViewModel.question
-                                }
-
-                                val totalAnswers by remember {
-                                    questionViewModel.totalAnswers
-                                }
-                                val correntAnswers by remember {
-                                    questionViewModel.correctAnswers
-                                }
-                                val cityDetailImageLink by remember {
-                                    questionViewModel.cityDetailImageLink
-                                }
-                                question?.let { q ->
-                                    QuestionScreenWithSTTScreen(
-                                        question = q,
-                                        correctAnswers=correntAnswers,
-                                        totalAnswers=totalAnswers,
-                                        cityDetailImageLink=cityDetailImageLink,
-                                        questionViewModel= questionViewModel,
-                                        onAnswerProvided = { spokenAnswer ->
-                                            Log.d("STT Answer", "Kullanıcı Cevabı: $spokenAnswer")
-                                            // Kullanıcının cevabını doğru cevap ile karşılaştırabilirsiniz.
-                                            Log.d("DogruCevap",question!!.correctAnswer)
-                                            if(question!!.correctAnswer.trim().lowercase()==spokenAnswer.trim().lowercase()){
-                                                questionViewModel.onCorrectAnswer()
-
-                                            }else{
-                                                questionViewModel.onWrongAnswer(q.correctAnswer)
-                                            }
-
-                                        },
-                                        onNextQuestion = {selectedOptionIndex, answer->
-                                            questionViewModel.calculateScore(selectedOptionIndex,answer)
-                                            lifecycleScope.launch {
-                                                kotlinx.coroutines.delay(2000)
-                                                questionViewModel.question.value = null
-                                            }
-                                        }
-                                    )
-
-                                } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+                                    QuestionScreenWithSTTScreen()
                             }
                             composable("city_details_screen/{cityId}",
                                 arguments = listOf(

@@ -10,16 +10,14 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import java.util.Locale
 import android.Manifest
-
+import android.speech.tts.UtteranceProgressListener
 
 class TextToSpeechHelper(private val context: Context) {
-
     private var tts: TextToSpeech? = null
     private val messageQueue: MutableList<String> = mutableListOf()
     private var isSpeaking = false
@@ -52,7 +50,7 @@ class TextToSpeechHelper(private val context: Context) {
     }*/
 
     fun speak(message: String, onComplete: () -> Unit) {
-        tts?.speak(message, TextToSpeech.QUEUE_FLUSH, null, "ttsId")
+        tts?.speak(message, TextToSpeech.QUEUE_FLUSH, null, "utteranceId")
         tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String?) {}
             override fun onDone(utteranceId: String?) {
@@ -127,8 +125,6 @@ class TextToSpeechHelper(private val context: Context) {
                             onError()
                             onError()
                         }
-
-
                         override fun onResults(results: Bundle?) {
                             val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                             if (!matches.isNullOrEmpty()) {
@@ -137,16 +133,13 @@ class TextToSpeechHelper(private val context: Context) {
                                 onError()
                             }
                         }
-
                         override fun onPartialResults(partialResults: Bundle?) {}
                         override fun onEvent(eventType: Int, params: Bundle?) {}
                     })
-
                     speechRecognizer.startListening(recognizerIntent)
                 }
             }
     }
-
 
     fun stop() {
         tts?.stop()

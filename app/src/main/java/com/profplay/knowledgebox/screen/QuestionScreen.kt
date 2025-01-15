@@ -39,8 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun QuestionScreen(question: Question,
@@ -67,14 +70,14 @@ fun QuestionScreen(question: Question,
         val correctAnswer = question.correctAnswer.replace("\\s+".toRegex(), "").trim().lowercase()
         //1 -> tam eşleşme        2 -> kapsıyor mu?        3 -> %80'den fazla benzerlik
         val matchedIndex = question.options.filter { option ->
-            option.trim().lowercase().replace("\\s+".toRegex(), "") == normalizedAnswer ||
+            option.replace("\\s+".toRegex(), "").trim().lowercase() == normalizedAnswer ||
                     normalizedAnswer.contains(
-                        option.trim().lowercase().replace("\\s+".toRegex(), "")
+                        option.replace("\\s+".toRegex(), "").trim().lowercase()
                     ) ||
                     calculateSimilarity(
                         normalizedAnswer,
-                        (option.trim().lowercase().replace("\\s+".toRegex(), ""))
-                    ) >= 80
+                        (option.replace("\\s+".toRegex(), "").trim().lowercase())
+                    ) >= 70
         }.firstOrNull()?.let { question.options.indexOf(it) } ?: -1
         if (matchedIndex != -1) {
             selectedOptionIndex = matchedIndex
@@ -82,16 +85,16 @@ fun QuestionScreen(question: Question,
             val isCorrect = when {
                 correctAnswer == normalizedAnswer -> matchedIndex
                 normalizedAnswer.contains(correctAnswer) -> matchedIndex
-                calculateSimilarity(normalizedAnswer, correctAnswer) >= 80 -> matchedIndex
+                calculateSimilarity(normalizedAnswer, correctAnswer) >= 70 -> matchedIndex
                 else -> -1
             }
             if (isCorrect != -1) {
-                Log.d("AnswerCheck", "Correct Answer!")
+                Log.d("AnswerCheck", "Correct Answer!"+normalizedAnswer+" = "+correctAnswer)
             } else {
-                Log.d("AnswerCheck", "Wrong Answer!")
+                Log.d("AnswerCheck", "Wrong Answer!"+normalizedAnswer+" != "+correctAnswer)
             }
         } else {
-            Log.d("AnswerCheck", "No match found for spoken answer.")
+            Log.d("AnswerCheck", "No match found for spoken answer."+normalizedAnswer+" !! "+correctAnswer)
             isRetrying = true
             showResult = false
         }
@@ -209,8 +212,9 @@ fun QuestionScreen(question: Question,
                 Log.d("selectedOptionIndex", selectedOptionIndex.toString())
                 Log.d("Scores", "${totalAnswers}:${correctAnswers}")
                 showResult = false
-                selectedOptionIndex?.let { onNextQuestion(it) }
-
+                selectedOptionIndex?.let {
+                    onNextQuestion(it)
+                }
             }
 
         } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())

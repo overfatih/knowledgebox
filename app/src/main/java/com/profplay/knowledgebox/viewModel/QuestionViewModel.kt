@@ -3,11 +3,8 @@ package com.profplay.knowledgebox.viewModel
 
 import android.app.Application
 import android.content.Context
-import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.profplay.knowledgebox.model.Question
 import kotlinx.coroutines.launch
@@ -19,7 +16,6 @@ import com.profplay.knowledgebox.model.PassedQuestion
 import com.profplay.knowledgebox.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.math.exp
 
 class QuestionViewModel(application: Application) : AndroidViewModel(application)  {
     private val db = Room.databaseBuilder(
@@ -49,6 +45,8 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     init {
         // TTS ve ses yöneticisini başlatabilirsiniz
         ttsHelper.init { }
+        val optionText = question.value?.options?.joinToString(", ")
+        speak("${question.value?.questionText}, Şıklar: $optionText") {}
     }
 
     fun generateQuestion() {
@@ -108,8 +106,9 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                 options = options,
                 correctAnswer = correctAnswer
             )
+
             withContext(Dispatchers.Main) {
-                val optionText = question.value?.options?.joinToString(", ")
+                //val optionText = question.value?.options?.joinToString(", ")
                 //speak("${question.value?.questionText}, Şıklar: $optionText") {}
             }
 
@@ -143,17 +142,17 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
         ttsHelper.speak("Tebrikler!"){}
     }
 
+    fun onWrongAnswer(answer:String ) {
+        soundManager.playSound("wrong")
+        ttsHelper.speak("Üzgünüm. Yanlış Cevap! Doğrusu: ${answer} olacaktı."){}
+    }
+
     fun speak(message: String, function: () -> Unit) {
         ttsHelper.speak(message = message){function()}
     }
 
     fun speakQueue(message: String) {
         ttsHelper.speakQueue(message)
-    }
-
-    fun onWrongAnswer(answer:String) {
-        soundManager.playSound("wrong")
-        ttsHelper.speak("Üzgünüm. Yanlış Cevap! Doğrusu: ${answer} olacaktı."){}
     }
 
     override fun onCleared() {
@@ -177,29 +176,12 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                     onError = {
                         Log.d("onError","onError")
                         // Hata durumunda yeniden deneme
-                        //repeatQuestionWithSTT(context, question, onResult)
                     }
                 )
             }
 
         }
     }
-
-    fun handleSpokenAnswer(spokenAnswer: String, correctAnswer: String, onNextQuestion: () -> Unit) {
-        val normalizedAnswer = spokenAnswer.lowercase().trim()
-        val expectedAnswer = correctAnswer.lowercase().trim()
-
-        if (normalizedAnswer == expectedAnswer) {
-            onCorrectAnswer()
-            onNextQuestion() // Doğru cevap verdi, bir sonraki soruya geç
-        } else {
-            onWrongAnswer("Bir dahaki sefere")
-            // Yanlış cevap verdi, kullanıcıya tekrar hakkı tanıyabilirsiniz
-        }
-    }
-
-
-
 
 
 }
