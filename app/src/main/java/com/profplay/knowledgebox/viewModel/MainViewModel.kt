@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.profplay.knowledgebox.roomdb.CityDataImporter.loadCitiesFromCsv
-import com.profplay.knowledgebox.roomdb.CityDatabase
-import com.profplay.knowledgebox.roomdb.CityDetailCrossRefImporter.loadCityDetailCrossRefFromCsv
-import com.profplay.knowledgebox.roomdb.CityDetailsDataImporter.loadCityDetailsFromCsv
-import com.profplay.knowledgebox.roomdb.QuestionTemplateDataImporter.loadQuestionTemplateFromCsv
-import com.profplay.knowledgebox.roomdb.TypeOfCityDetailDataImporter.loadTypeOfCityDetailFromCsv
+import com.profplay.knowledgebox.data.roomdb.CityDataImporter.loadCitiesFromCsv
+import com.profplay.knowledgebox.data.roomdb.CityDatabase
+import com.profplay.knowledgebox.data.roomdb.CityDetailCrossRefImporter.loadCityDetailCrossRefFromCsv
+import com.profplay.knowledgebox.data.roomdb.CityDetailsDataImporter.loadCityDetailsFromCsv
+import com.profplay.knowledgebox.data.roomdb.QuestionTemplateDataImporter.loadQuestionTemplateFromCsv
+import com.profplay.knowledgebox.data.roomdb.TypeOfCityDetailDataImporter.loadTypeOfCityDetailFromCsv
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {

@@ -20,12 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.profplay.knowledgebox.data.model.Question
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,31 +31,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.profplay.knowledgebox.util.UsbViewModelFactory
+import com.profplay.knowledgebox.data.model.Question
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
-import com.profplay.knowledgebox.viewModel.UsbViewModel
 
 @Composable
-fun QuestionScreen(question: Question,
-                   questionViewModel: QuestionViewModel,
-                   correctAnswers:  Int,
-                   totalAnswers:  Int,
-                   cityDetailImageLink: String?,
-                   onNextQuestion: (selectedOptionIndex: Int) -> Unit) {
+fun QuestionWithTTSScreen(question: Question,
+                          correctAnswers:  Int,
+                          totalAnswers:  Int,
+                          cityDetailImageLink: String?,
+                          questionViewModel: QuestionViewModel,
+                          onNextQuestion: (selectedOptionIndex: Int) -> Unit) {
 
     var selectedOptionIndex by remember { mutableStateOf<Int?>(null) }
     var showResult by remember { mutableStateOf(false) }
-    val ttsCompleted by questionViewModel.ttsCompleted.collectAsState()
+    var isRetrying by remember { mutableStateOf(false) } // Tekrar okuma durumu (ToDo:bunu bir tuşa bağla)
 
-    val context = LocalContext.current  // Burada Context'i alıyoruz
-    val usbViewModel: UsbViewModel = viewModel(factory = UsbViewModelFactory(context))
-    // USB'den gelen veriyi dinleme
-    val usbData by usbViewModel.usbData.collectAsState()
+    var ttsCompleted by remember { mutableStateOf(false) } // TTS okuma tamamlandı mı?
+
+    LaunchedEffect(Unit) {
+        val optionsText = question.options.joinToString(", ")
+        questionViewModel.speak("${question.questionText}, Şıklar: $optionsText") {
+            ttsCompleted = true // TTS tamamlandığında güncelle
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -112,81 +108,36 @@ fun QuestionScreen(question: Question,
                         color = Color.White
                     )
                 }
-
-                usbData?.let {
-                    Text("Gelen Veri: $it")
-                    Log.d("USB Data Received", it.toString())
-                }
-            }
-            /*if (showResult) {
-                showResult = false
-                questionViewModel.calculateScore(selectedOptionIndex, q.correctAnswer)
-                // TTS tamamlanmasını dinle ve ardından bir sonraki soruya geç
-                if (questionViewModel.ttsCompleted.value) {
-                    LaunchedEffect(Unit) {
-                        selectedOptionIndex?.let { onNextQuestion(it) }
-                    }
-                }
             }
 
-             */
-
-            LaunchedEffect(usbData) {
-                Log.d("USB Data Received", usbData.toString())
-                usbData?.let {
-                    when (it) {
-                        "a" -> {
-                            selectedOptionIndex = 0 // İlk seçeneği seç
-                            showResult = true
-                        }
-                        "b" -> {
-                            selectedOptionIndex = 1 // İkinci seçeneği seç
-                            showResult = true
-                        }
-                        "c" -> {
-                            selectedOptionIndex = 2 // Üçüncü seçeneği seç
-                            showResult = true
-                        }
-                        "d" -> {
-                            selectedOptionIndex = 3 // Dördüncü seçeneği seç
-                            showResult = true
-                        }
-                    }
+            if (isRetrying) {
+                ttsCompleted = true // TTS tamamlandığında güncelle
+                // Soruyu tekrar okuma
+                LaunchedEffect(Unit) {
+                    questionViewModel.repeatQuestionWithTTS(question)
                 }
-
+                isRetrying = false
             }
 
-
-
-            Log.d("showResultF", showResult.toString())
             if (showResult) {
+                Log.d("selectedOptionIndex", selectedOptionIndex.toString())
+                Log.d("Scores", "${totalAnswers}:${correctAnswers}")
 
-                LaunchedEffect(ttsCompleted) {
-                    questionViewModel.calculateScoreSuspend(selectedOptionIndex, q.correctAnswer)
-                    if (ttsCompleted) {
-                        Log.d("ttsCompletednextQuestion", ttsCompleted.toString())
-                        questionViewModel.resetTtsCompleted()
-                        selectedOptionIndex?.let { onNextQuestion(it) }
-
-                    }
+                selectedOptionIndex?.let {
+                    onNextQuestion(it)
                 }
-
                 showResult = false
             }
-
-
 
         } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
-
-        Text(text = usbData ?: "No Data")
         // Progress Bar
         Spacer(modifier = Modifier.height(24.dp))
-        ProgressBar(correctAnswers = correctAnswers, totalAnswers = totalAnswers)
+        ProgressBarTTS(correctAnswers = correctAnswers, totalAnswers = totalAnswers)
     }
 }
 
 @Composable
-fun ProgressBar(correctAnswers: Int, totalAnswers: Int) { //ToDo: belirli barajlar koy ve progras bar sorular geeçtikçe yeşil vey kırmızı dolsun
+fun ProgressBarTTS(correctAnswers: Int, totalAnswers: Int) {
     val progress = if (totalAnswers > 0) correctAnswers / totalAnswers.toFloat() else 0.5f
     val incorrectProgress = 1f - progress
 
@@ -204,6 +155,7 @@ fun ProgressBar(correctAnswers: Int, totalAnswers: Int) { //ToDo: belirli barajl
                 .weight(progress.coerceAtLeast(0.01f))
                 .background(Color.Green)
         )
+
         // Yanlış cevaplar için kırmızı bar
         Box(
             modifier = Modifier

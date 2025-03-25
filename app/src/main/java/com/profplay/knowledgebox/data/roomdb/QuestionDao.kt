@@ -1,12 +1,11 @@
-package com.profplay.knowledgebox.roomdb
+package com.profplay.knowledgebox.data.roomdb
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityDetail
-import com.profplay.knowledgebox.model.QuestionTemplate
+import com.profplay.knowledgebox.data.model.City
+import com.profplay.knowledgebox.data.model.QuestionTemplate
 
 @Dao
 interface QuestionDao {

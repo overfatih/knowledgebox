@@ -1,11 +1,11 @@
-package com.profplay.knowledgebox.roomdb
+package com.profplay.knowledgebox.data.roomdb
 
 import android.content.Context
 import android.util.Log
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityDetail
-import com.profplay.knowledgebox.model.CityDetailCrossRef
-import com.profplay.knowledgebox.model.TypeOfCityDetail
+import com.profplay.knowledgebox.data.model.City
+import com.profplay.knowledgebox.data.model.CityDetail
+import com.profplay.knowledgebox.data.model.CityDetailCrossRef
+import com.profplay.knowledgebox.data.model.TypeOfCityDetail
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

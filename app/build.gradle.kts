@@ -87,4 +87,6 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("io.coil-kt:coil-compose:2.0.0")
+    //usb serial
+    implementation ("com.github.mik3y:usb-serial-for-android:3.8.1")
 }

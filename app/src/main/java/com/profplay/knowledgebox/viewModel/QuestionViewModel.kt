@@ -6,15 +6,17 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.profplay.knowledgebox.model.Question
+import com.profplay.knowledgebox.data.model.Question
 import kotlinx.coroutines.launch
 import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
 import com.profplay.knowledgebox.helper.SoundEffectManager
 import com.profplay.knowledgebox.helper.TextToSpeechHelper
-import com.profplay.knowledgebox.model.PassedQuestion
-import com.profplay.knowledgebox.roomdb.CityDatabase
+import com.profplay.knowledgebox.data.model.PassedQuestion
+import com.profplay.knowledgebox.data.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
 class QuestionViewModel(application: Application) : AndroidViewModel(application)  {
@@ -41,6 +43,9 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     val cityDetailId = mutableStateOf<Int>(0)
     val isCityNameOnQuestion = mutableStateOf<Int?>(null)
     val cityDetailImageLink = mutableStateOf<String?>("")
+    //val ttsCompleted = mutableStateOf<Boolean>(true) // TTS okuma tamamlandı mı?
+    private val _ttsCompleted = MutableStateFlow(false)
+    val ttsCompleted: StateFlow<Boolean> get() = _ttsCompleted
 
     init {
         // TTS ve ses yöneticisini başlatabilirsiniz
@@ -115,8 +120,32 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    suspend fun calculateScoreSuspend(selectedOptionIndex:Int?,answer:String){
+        selectedOptionIndex?.let {
+            //_ttsCompleted.value = false
+            val selectedAnswer = question.value?.let { it.options[selectedOptionIndex] }?:""
+            if (selectedAnswer == question.value?.correctAnswer) {
+                correctAnswers.value++
+                // Soru bilgilerini geçmiş sorular listesine ekle
+                question.value?.let {
+                    passedQuestionList.add(
+                        PassedQuestion(
+                            cityDetailId = cityDetailId.value,
+                            isCityNameOnQuestion = isCityNameOnQuestion.value!!
+                        )
+                    )
+                }
+                onCorrectAnswer()
+            }
+            else{ onWrongAnswer(answer) }
+            totalAnswers.value++
+            Log.d("PassedSize",passedQuestionList.size.toString())
+        }
+    }
+
     fun calculateScore(selectedOptionIndex:Int?,answer:String){
         selectedOptionIndex?.let {
+            //_ttsCompleted.value = false
             val selectedAnswer = question.value?.let { it.options[selectedOptionIndex] }?:""
             if (selectedAnswer == question.value?.correctAnswer) {
                 correctAnswers.value++
@@ -139,12 +168,18 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
 
     fun onCorrectAnswer() {
         soundManager.playSound("correct")
-        ttsHelper.speak("Tebrikler!"){}
+        ttsHelper.speak("Tebrikler!"){
+            _ttsCompleted.value = true
+            Log.d("ttsCompletedCorrect", ttsCompleted.value.toString())
+        }
     }
 
-    fun onWrongAnswer(answer:String ) {
+    fun onWrongAnswer(answer:String) {
         soundManager.playSound("wrong")
-        ttsHelper.speak("Üzgünüm. Yanlış Cevap! Doğrusu: ${answer} olacaktı."){}
+        ttsHelper.speak("Üzgünüm. Yanlış Cevap! Doğrusu: ${answer} olacaktı."){
+            _ttsCompleted.value = true
+            Log.d("ttsCompletedWrong", ttsCompleted.value.toString())
+        }
     }
 
     fun speak(message: String, function: () -> Unit) {
@@ -153,6 +188,11 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
 
     fun speakQueue(message: String) {
         ttsHelper.speakQueue(message)
+    }
+
+    fun resetTtsCompleted() {
+        _ttsCompleted.value = false
+        Log.d("ttsCompletedReset", ttsCompleted.value.toString())
     }
 
     override fun onCleared() {
@@ -178,6 +218,15 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                         // Hata durumunda yeniden deneme
                     }
                 )
+            }
+
+        }
+    }
+
+    fun repeatQuestionWithTTS(question: Question) {
+        val optionsText = question.options.joinToString(", ")
+        viewModelScope.launch(Dispatchers.Main) {
+            speak("Soruyu tekrar ediyorum: ${question.questionText}. Şıklar: $optionsText") {
             }
 
         }

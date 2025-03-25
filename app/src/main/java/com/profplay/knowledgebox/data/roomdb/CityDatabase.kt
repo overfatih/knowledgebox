@@ -1,14 +1,14 @@
-package com.profplay.knowledgebox.roomdb
+package com.profplay.knowledgebox.data.roomdb
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityDetail
-import com.profplay.knowledgebox.model.CityDetailCrossRef
-import com.profplay.knowledgebox.model.QuestionTemplate
-import com.profplay.knowledgebox.model.TypeOfCityDetail
+import com.profplay.knowledgebox.data.model.City
+import com.profplay.knowledgebox.data.model.CityDetail
+import com.profplay.knowledgebox.data.model.CityDetailCrossRef
+import com.profplay.knowledgebox.data.model.QuestionTemplate
+import com.profplay.knowledgebox.data.model.TypeOfCityDetail
 
 @Database(entities = [City::class, CityDetail::class, TypeOfCityDetail::class, QuestionTemplate::class, CityDetailCrossRef::class], version = 3)
 abstract class CityDatabase : RoomDatabase() {

@@ -1,8 +1,8 @@
-package com.profplay.knowledgebox.roomdb
+package com.profplay.knowledgebox.data.roomdb
 
 import android.content.Context
 import android.util.Log
-import com.profplay.knowledgebox.model.QuestionTemplate
+import com.profplay.knowledgebox.data.model.QuestionTemplate
 
 object QuestionTemplateDataImporter {
     suspend fun loadQuestionTemplateFromCsv(context: Context, questionDao: QuestionDao) {

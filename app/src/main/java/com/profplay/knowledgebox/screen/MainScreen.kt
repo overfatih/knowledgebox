@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,24 +51,24 @@ fun MainScreen(name: String, navController: NavController) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
             ) {
-            MainButton("Knowledge Pool", Icons.Filled.List){navController.navigate("knowledge_pool_screen")}
             MainButton("Game",Icons.Filled.PlayArrow){navController.navigate("question_screen")}
+            MainButton("Knowledge Pool", Icons.Filled.List){navController.navigate("knowledge_pool_screen")}
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton("Setting",Icons.Filled.Settings){ navController.navigate("setting_screen") }
-            MainButton("Profile",Icons.Filled.Person){  }
+            MainButton("GameWithTts",Icons.Filled.PlayArrow){ navController.navigate("question_with_tts_screen") }
+            MainButton("Profile",Icons.Filled.Person){ navController.navigate("profile_screen") }
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton(" ", Icons.Filled.Favorite){ navController.navigate("question_screen_with_sst_screen") }
-            MainButton("Leader Table", Icons.Filled.Star){ }
+            MainButton("GameWithStt", Icons.Filled.PlayArrow){ navController.navigate("question_with_stt_screen") }
+            MainButton("Setting", Icons.Filled.Settings){ navController.navigate("setting_screen") }
         }
     }
 }

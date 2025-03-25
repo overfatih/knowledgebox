@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -39,7 +37,6 @@ import com.profplay.knowledgebox.screen.CityDetailsScreen
 import com.profplay.knowledgebox.screen.KnowledgePoolScreen
 import com.profplay.knowledgebox.screen.MainScreen
 import com.profplay.knowledgebox.screen.SettingScreen
-import com.profplay.knowledgebox.screen.QuestionScreenWithSTTScreen
 import com.profplay.knowledgebox.ui.theme.KnowledgeBoxTheme
 import com.profplay.knowledgebox.viewModel.CityDetailViewModel
 import com.profplay.knowledgebox.viewModel.KnowledgePoolViewModel
@@ -52,6 +49,22 @@ import com.profplay.knowledgebox.viewModel.QuestionViewModel
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
+import android.os.Build
+import android.util.Log
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.profplay.knowledgebox.screen.ProfileScreen
+import com.profplay.knowledgebox.screen.QuestionWithSTTScreen
+import com.profplay.knowledgebox.screen.QuestionWithTTSScreen
+import com.profplay.knowledgebox.screen.UsbScreen
+import com.profplay.knowledgebox.util.UsbViewModelFactory
+import com.profplay.knowledgebox.viewModel.UsbViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.profplay.knowledgebox.helper.controldevices.UsbManagerHelper
+import com.profplay.knowledgebox.viewModel.ProfileViewModel
 
 class MainActivity : ComponentActivity() {
     private val REQUEST_CODE_RECORD_AUDIO = 1
@@ -61,44 +74,20 @@ class MainActivity : ComponentActivity() {
     private val knowledgePoolViewModel: KnowledgePoolViewModel by viewModels<KnowledgePoolViewModel> ()
     private val cityDetailViewModel: CityDetailViewModel by viewModels<CityDetailViewModel> ()
     private val questionViewModel: QuestionViewModel by viewModels<QuestionViewModel> ()
+    private val profileViewModel: ProfileViewModel by viewModels<ProfileViewModel> ()
+    private lateinit var usbReceiver: BroadcastReceiver
 
-    @SuppressLint("CoroutineCreationDuringComposition")
+    @SuppressLint("CoroutineCreationDuringComposition", "UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val context = LocalContext.current
             KnowledgeBoxTheme {
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                         BottomAppBar (
-                            actions = {
-                                IconButton(onClick = { /* do something */
-                                    myAuth = Firebase.auth
-                                    myAuth.signOut()
-                                    navigateToLoginActivity()
-                                }) {
-                                    Icon(
-                                        Icons.Filled.KeyboardArrowLeft,
-                                        contentDescription = "Cancel, Go Back"
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.PlayArrow,
-                                        contentDescription = "Voice It!"
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.ThumbUp,
-                                        contentDescription = "Confirm"
-                                    )
-                                }
-                            }
-                        )
-                    }) { innerPadding ->
+                    modifier = Modifier.fillMaxSize()
+                    ) { innerPadding ->
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ){
@@ -106,18 +95,7 @@ class MainActivity : ComponentActivity() {
                             composable("main_screen"){
                                 MainScreen(name = "Knowledge Box", navController = navController)
                             }
-
-                            composable("knowledge_pool_screen") {
-                                knowledgePoolViewModel.getAllCities()
-                                val cityList by remember {
-                                    knowledgePoolViewModel.cityList
-                                }
-                                KnowledgePoolScreen(
-                                    cityList = cityList,
-                                    navController = navController
-                                )
-                            }
-
+                            /*main screens*/
                             composable("question_screen") {
                                 if (questionViewModel.question.value == null) {
                                     questionViewModel.generateQuestion()
@@ -138,6 +116,54 @@ class MainActivity : ComponentActivity() {
                                 question?.let { q ->
                                     QuestionScreen(
                                         question = q,
+                                        questionViewModel=questionViewModel,
+                                        correctAnswers=correntAnswers,
+                                        totalAnswers=totalAnswers,
+                                        cityDetailImageLink=cityDetailImageLink,
+                                        onNextQuestion = {selectedOptionIndex->
+                                            lifecycleScope.launch {
+                                                kotlinx.coroutines.delay(2000)
+                                                Log.d("ttsCompletedIndex", selectedOptionIndex.toString())
+                                                questionViewModel.question.value = null
+
+                                            }
+                                        }
+                                        )
+
+                                } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+                            }
+
+                            composable("knowledge_pool_screen") {
+                                knowledgePoolViewModel.getAllCities()
+                                val cityList by remember {
+                                    knowledgePoolViewModel.cityList
+                                }
+                                KnowledgePoolScreen(
+                                    cityList = cityList,
+                                    navController = navController
+                                )
+                            }
+
+                            composable("question_with_tts_screen"){
+                                if (questionViewModel.question.value == null) {
+                                    questionViewModel.generateQuestion()
+                                }
+                                val question by remember {
+                                    questionViewModel.question
+                                }
+
+                                val totalAnswers by remember {
+                                    questionViewModel.totalAnswers
+                                }
+                                val correntAnswers by remember {
+                                    questionViewModel.correctAnswers
+                                }
+                                val cityDetailImageLink by remember {
+                                    questionViewModel.cityDetailImageLink
+                                }
+                                question?.let { q ->
+                                    QuestionWithTTSScreen(
+                                        question = q,
                                         correctAnswers=correntAnswers,
                                         totalAnswers=totalAnswers,
                                         cityDetailImageLink=cityDetailImageLink,
@@ -149,16 +175,56 @@ class MainActivity : ComponentActivity() {
                                                 questionViewModel.question.value = null
                                             }
                                         }
-                                        )
+                                    )
 
                                 } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
                             }
+
+                            composable("profile_screen"){
+                                ProfileScreen(profileViewModel, context)
+                            }
+
+                            composable("question_with_stt_screen"){
+                                if (questionViewModel.question.value == null) {
+                                    questionViewModel.generateQuestion()
+                                }
+                                val question by remember {
+                                    questionViewModel.question
+                                }
+
+                                val totalAnswers by remember {
+                                    questionViewModel.totalAnswers
+                                }
+                                val correntAnswers by remember {
+                                    questionViewModel.correctAnswers
+                                }
+                                val cityDetailImageLink by remember {
+                                    questionViewModel.cityDetailImageLink
+                                }
+                                question?.let { q ->
+                                    QuestionWithSTTScreen(
+                                        question = q,
+                                        correctAnswers=correntAnswers,
+                                        totalAnswers=totalAnswers,
+                                        cityDetailImageLink=cityDetailImageLink,
+                                        questionViewModel= questionViewModel,
+                                        onNextQuestion = {selectedOptionIndex->
+                                            questionViewModel.calculateScore(selectedOptionIndex, q.correctAnswer)
+                                            lifecycleScope.launch {
+                                                kotlinx.coroutines.delay(2000)
+                                                questionViewModel.question.value = null
+                                            }
+                                        }
+                                    )
+
+                                } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+                            }
+
                             composable("setting_screen"){
-                                SettingScreen()
+                                SettingScreen(navController = navController)
                             }
-                            composable("question_screen_with_sst_screen"){
-                                    QuestionScreenWithSTTScreen()
-                            }
+
+                            /*sub screens*/
                             composable("city_details_screen/{cityId}",
                                 arguments = listOf(
                                     navArgument("cityId") {
@@ -179,15 +245,35 @@ class MainActivity : ComponentActivity() {
 
                                 CityDetailsScreen(selectedCity, cityWithDetails)
                             }
+
+                            composable("usb_screen"){
+                                UsbScreen()
+                            }
                         }
                     }
                 }
             }
         }
-        // Mikrofon izni kontrolü
-        checkAudioPermission()
+        checkAudioPermission() // Mikrofon izni kontrolü
+
+        usbReceiver = UsbManagerHelper.createUsbReceiver { granted ->
+            if (granted) {
+                Log.d("USB", "USB izni verildi!")
+            } else {
+                Log.d("USB", "USB izni reddedildi!")
+            }
+        }
+        val filter = IntentFilter(UsbManagerHelper.USB_PERMISSION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(usbReceiver, filter, Context.RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(usbReceiver, filter)
+        }
 
     }
+
+
+
     private fun checkAudioPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
             != PackageManager.PERMISSION_GRANTED) {
@@ -206,7 +292,16 @@ class MainActivity : ComponentActivity() {
         finish()
           // MainActivity'yi kapatıyoruz ki geri butonu ile tekrar açılmasın
     }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(usbReceiver) // MainActivity’den çıkarken receiver’ı kaldır
+
+    }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

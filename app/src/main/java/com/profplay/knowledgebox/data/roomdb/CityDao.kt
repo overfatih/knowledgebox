@@ -1,4 +1,4 @@
-package com.profplay.knowledgebox.roomdb
+package com.profplay.knowledgebox.data.roomdb
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,13 +6,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityDetail
-import com.profplay.knowledgebox.model.CityDetailCrossRef
-import com.profplay.knowledgebox.model.CityWithDetails
-import com.profplay.knowledgebox.model.CityWithType
-import com.profplay.knowledgebox.model.DetailWithCities
-import com.profplay.knowledgebox.model.TypeOfCityDetail
+import com.profplay.knowledgebox.data.model.City
+import com.profplay.knowledgebox.data.model.CityDetail
+import com.profplay.knowledgebox.data.model.CityDetailCrossRef
+import com.profplay.knowledgebox.data.model.CityWithDetails
+import com.profplay.knowledgebox.data.model.CityWithType
+import com.profplay.knowledgebox.data.model.DetailWithCities
+import com.profplay.knowledgebox.data.model.TypeOfCityDetail
 
 @Dao
 interface CityDao {

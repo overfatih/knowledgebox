@@ -51,6 +51,7 @@ class LoginActivity : ComponentActivity() {
             startActivity(intent)
             finish()
         }
+
     }
     private fun navigateToMainActivity() {
         // MainActivity'ye geçiş yapmak için Intent kullanıyoruz

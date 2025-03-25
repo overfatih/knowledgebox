@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.roomdb.CityDatabase
+import com.profplay.knowledgebox.data.model.City
+import com.profplay.knowledgebox.data.roomdb.CityDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

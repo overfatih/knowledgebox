@@ -21,8 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.profplay.knowledgebox.model.City
-import com.profplay.knowledgebox.model.CityWithType
+import com.profplay.knowledgebox.data.model.City
+import com.profplay.knowledgebox.data.model.CityWithType
 
 @Composable
 fun CityDetailsScreen( city :City, cityWithDetails :List<CityWithType>) {

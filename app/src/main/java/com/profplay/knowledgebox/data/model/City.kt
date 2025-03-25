@@ -1,4 +1,4 @@
-package com.profplay.knowledgebox.model
+package com.profplay.knowledgebox.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
