@@ -89,4 +89,5 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.0.0")
     //usb serial
     implementation ("com.github.mik3y:usb-serial-for-android:3.8.1")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 }

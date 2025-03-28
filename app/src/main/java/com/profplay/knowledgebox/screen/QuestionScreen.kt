@@ -39,9 +39,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.profplay.knowledgebox.util.UsbViewModelFactory
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
-import com.profplay.knowledgebox.viewModel.UsbViewModel
 
 @Composable
 fun QuestionScreen(question: Question,
@@ -54,11 +52,6 @@ fun QuestionScreen(question: Question,
     var selectedOptionIndex by remember { mutableStateOf<Int?>(null) }
     var showResult by remember { mutableStateOf(false) }
     val ttsCompleted by questionViewModel.ttsCompleted.collectAsState()
-
-    val context = LocalContext.current  // Burada Context'i alıyoruz
-    val usbViewModel: UsbViewModel = viewModel(factory = UsbViewModelFactory(context))
-    // USB'den gelen veriyi dinleme
-    val usbData by usbViewModel.usbData.collectAsState()
 
     Column(
         modifier = Modifier
@@ -113,10 +106,6 @@ fun QuestionScreen(question: Question,
                     )
                 }
 
-                usbData?.let {
-                    Text("Gelen Veri: $it")
-                    Log.d("USB Data Received", it.toString())
-                }
             }
             /*if (showResult) {
                 showResult = false
@@ -130,33 +119,6 @@ fun QuestionScreen(question: Question,
             }
 
              */
-
-            LaunchedEffect(usbData) {
-                Log.d("USB Data Received", usbData.toString())
-                usbData?.let {
-                    when (it) {
-                        "a" -> {
-                            selectedOptionIndex = 0 // İlk seçeneği seç
-                            showResult = true
-                        }
-                        "b" -> {
-                            selectedOptionIndex = 1 // İkinci seçeneği seç
-                            showResult = true
-                        }
-                        "c" -> {
-                            selectedOptionIndex = 2 // Üçüncü seçeneği seç
-                            showResult = true
-                        }
-                        "d" -> {
-                            selectedOptionIndex = 3 // Dördüncü seçeneği seç
-                            showResult = true
-                        }
-                    }
-                }
-
-            }
-
-
 
             Log.d("showResultF", showResult.toString())
             if (showResult) {
@@ -178,7 +140,7 @@ fun QuestionScreen(question: Question,
 
         } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
 
-        Text(text = usbData ?: "No Data")
+
         // Progress Bar
         Spacer(modifier = Modifier.height(24.dp))
         ProgressBar(correctAnswers = correctAnswers, totalAnswers = totalAnswers)
@@ -211,5 +173,12 @@ fun ProgressBar(correctAnswers: Int, totalAnswers: Int) { //ToDo: belirli barajl
                 .weight(incorrectProgress.coerceAtLeast(0.01f))
                 .background(Color.Red)
         )
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(20.dp)
+    ){
+        Text("${100*(correctAnswers / totalAnswers.toFloat())} %", textAlign = TextAlign.Center)
     }
 }

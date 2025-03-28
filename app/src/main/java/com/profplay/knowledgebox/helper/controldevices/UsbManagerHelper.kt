@@ -13,7 +13,7 @@ import com.hoho.android.usbserial.driver.UsbSerialPort
 import com.hoho.android.usbserial.driver.UsbSerialProber
 
 object UsbManagerHelper {
-    const val USB_PERMISSION = "com.profplay.knowledgebox.USB_PERMISSION"
+    const val USB_PERMISSION =  "com.profplay.knowledgebox.USB_PERMISSION"
     private var usbSerialPort: UsbSerialPort? = null
 
     // 🔍 USB Cihazını Bul
@@ -56,6 +56,7 @@ object UsbManagerHelper {
     private val usbReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action
+
             if (USB_PERMISSION == action) {
                 val device: UsbDevice? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     intent?.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice::class.java)
@@ -84,10 +85,10 @@ object UsbManagerHelper {
 
             val filter = IntentFilter(USB_PERMISSION)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                context.registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+                context.registerReceiver(usbReceiver, filter, Context.RECEIVER_EXPORTED)
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+                context.registerReceiver(usbReceiver, filter, Context.RECEIVER_EXPORTED)
             }
 
             // Receiver'ı kaydet

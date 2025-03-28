@@ -1,5 +1,7 @@
 package com.profplay.knowledgebox.screen
 
+import android.R
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,14 +13,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Dialpad
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.HearingDisabled
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -51,15 +57,16 @@ fun MainScreen(name: String, navController: NavController) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
             ) {
-            MainButton("Game",Icons.Filled.PlayArrow){navController.navigate("question_screen")}
-            MainButton("Knowledge Pool", Icons.Filled.List){navController.navigate("knowledge_pool_screen")}
+            MainButton("Game",Icons.Filled.HearingDisabled){navController.navigate("question_screen")}
+            MainButton("Knowledge Pool", Icons.Filled.Info){navController.navigate("knowledge_pool_screen")}
         }
         Row (
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton("GameWithTts",Icons.Filled.PlayArrow){ navController.navigate("question_with_tts_screen") }
+
+            MainButton("GameWithTts", Icons.Filled.Dialpad){ navController.navigate("question_with_tts_screen") }
             MainButton("Profile",Icons.Filled.Person){ navController.navigate("profile_screen") }
         }
         Row (
@@ -67,25 +74,26 @@ fun MainScreen(name: String, navController: NavController) {
             modifier = Modifier.fillMaxWidth(1f)
                 .padding(bottom = 50.dp)
         ) {
-            MainButton("GameWithStt", Icons.Filled.PlayArrow){ navController.navigate("question_with_stt_screen") }
+            MainButton("GameWithStt", Icons.Filled.VisibilityOff){ navController.navigate("question_with_stt_screen") }
             MainButton("Setting", Icons.Filled.Settings){ navController.navigate("setting_screen") }
         }
     }
 }
 
 @Composable
-fun MainButton(buttomDescription:String, iconVector:ImageVector, onClick: () -> Unit){
+fun MainButton(buttomDescription:String, iconVector:ImageVector, isEnabled:Boolean = true, onClick: () -> Unit){
 
     IconButton(
         onClick = onClick,
+        enabled = isEnabled,
         modifier = Modifier
             .size(150.dp, 150.dp)
-            .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+            .background(color = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.inversePrimary, shape = CircleShape)
     ) {
         Icon(
             iconVector,
             contentDescription = buttomDescription,
-            tint = MaterialTheme.colorScheme.inverseOnSurface
+            tint = if (isEnabled)  MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface
         )
     }
 }

@@ -54,6 +54,8 @@ import android.content.Context
 import android.content.IntentFilter
 import android.os.Build
 import android.util.Log
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.profplay.knowledgebox.screen.ProfileScreen
@@ -62,7 +64,6 @@ import com.profplay.knowledgebox.screen.QuestionWithTTSScreen
 import com.profplay.knowledgebox.screen.UsbScreen
 import com.profplay.knowledgebox.util.UsbViewModelFactory
 import com.profplay.knowledgebox.viewModel.UsbViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.profplay.knowledgebox.helper.controldevices.UsbManagerHelper
 import com.profplay.knowledgebox.viewModel.ProfileViewModel
 
@@ -84,6 +85,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val context = LocalContext.current
+            val usbViewModel: UsbViewModel = viewModel(factory = UsbViewModelFactory(this))
+            val usbData by usbViewModel.usbData.collectAsState()
             KnowledgeBoxTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
@@ -161,6 +164,7 @@ class MainActivity : ComponentActivity() {
                                 val cityDetailImageLink by remember {
                                     questionViewModel.cityDetailImageLink
                                 }
+
                                 question?.let { q ->
                                     QuestionWithTTSScreen(
                                         question = q,
@@ -168,6 +172,7 @@ class MainActivity : ComponentActivity() {
                                         totalAnswers=totalAnswers,
                                         cityDetailImageLink=cityDetailImageLink,
                                         questionViewModel= questionViewModel,
+                                        usbViewModel = usbViewModel,
                                         onNextQuestion = {selectedOptionIndex->
                                             questionViewModel.calculateScore(selectedOptionIndex, q.correctAnswer)
                                             lifecycleScope.launch {
@@ -181,7 +186,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable("profile_screen"){
-                                ProfileScreen(profileViewModel, context)
+                                ProfileScreen(profileViewModel, context, navController)
                             }
 
                             composable("question_with_stt_screen"){
@@ -247,7 +252,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable("usb_screen"){
-                                UsbScreen()
+                                UsbScreen(usbViewModel)
                             }
                         }
                     }

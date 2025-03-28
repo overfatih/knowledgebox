@@ -250,6 +250,13 @@ fun ProgressBarSTT(correctAnswers: Int, totalAnswers: Int) {
                 .background(Color.Red)
         )
     }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(20.dp)
+    ){
+        Text("${100*(correctAnswers / totalAnswers.toFloat())} %", textAlign = TextAlign.Center)
+    }
 }
 
 // Benzerlik oranını hesaplayan fonksiyon (örnek olarak editDistance kullanılıyor)

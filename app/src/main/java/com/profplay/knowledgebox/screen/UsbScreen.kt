@@ -13,10 +13,10 @@ import com.profplay.knowledgebox.util.UsbViewModelFactory
 import com.profplay.knowledgebox.viewModel.UsbViewModel
 
 @Composable
-fun UsbScreen() {
-    val context = LocalContext.current  // Burada Context'i alıyoruz
-    val appContext = context.applicationContext
-    val usbViewModel: UsbViewModel = viewModel(factory = UsbViewModelFactory(appContext))
+fun UsbScreen(usbViewModel: UsbViewModel) {
+    //val context = LocalContext.current  // Burada Context'i alıyoruz
+    //val appContext = context.applicationContext
+    //val usbViewModel: UsbViewModel = viewModel(factory = UsbViewModelFactory(appContext))
 
     val usbDevice by usbViewModel.usbDevice.collectAsState()
     val usbPermissionGranted by usbViewModel.usbPermissionGranted.collectAsState()

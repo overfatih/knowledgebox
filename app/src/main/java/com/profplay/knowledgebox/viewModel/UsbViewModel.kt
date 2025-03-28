@@ -66,16 +66,16 @@ class UsbViewModel(context: Context) : ViewModel() {
                         intent.getParcelableExtra(UsbManager.EXTRA_DEVICE)
                     }
                     Log.d("USB", "Intent Action: ${intent.action}")
-                    //ToDo: İzin verilmesine rağmen granred false geliyor?
+                    //ToDo: İzin verilmesine rağmen granted false geliyor?
                     val granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)
                     if (granted) {
                         Log.d("USB", "İzin verildi: $device")
-                        _usbPermissionGranted.value = true  // İzin verildiyse durumu güncelle
+                        //_usbPermissionGranted.value = true  // İzin verildiyse durumu güncelle
                     } else {
                         Log.d("USB", "İzin reddedildi: $device")
-                        _usbPermissionGranted.value = false  // İzin reddedildiyse durumu güncelle
+                        //_usbPermissionGranted.value = false  // İzin reddedildiyse durumu güncelle
                     }
-                    //_usbPermissionGranted.value = granted  // İzin durumunu güncelle!
+                    _usbPermissionGranted.value = granted  // İzin durumunu güncelle!
                 }
             }
         }
@@ -125,5 +125,9 @@ class UsbViewModel(context: Context) : ViewModel() {
                 }
             }
         }
+    }
+
+    fun clearUsbData() {
+        _usbData.value = null // usbData'yı sıfırla
     }
 }

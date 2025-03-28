@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.profplay.knowledgebox.data.model.Question
 import com.profplay.knowledgebox.viewModel.QuestionViewModel
+import com.profplay.knowledgebox.viewModel.UsbViewModel
+import kotlin.toString
 
 @Composable
 fun QuestionWithTTSScreen(question: Question,
@@ -41,6 +44,7 @@ fun QuestionWithTTSScreen(question: Question,
                           totalAnswers:  Int,
                           cityDetailImageLink: String?,
                           questionViewModel: QuestionViewModel,
+                          usbViewModel: UsbViewModel,
                           onNextQuestion: (selectedOptionIndex: Int) -> Unit) {
 
     var selectedOptionIndex by remember { mutableStateOf<Int?>(null) }
@@ -48,6 +52,9 @@ fun QuestionWithTTSScreen(question: Question,
     var isRetrying by remember { mutableStateOf(false) } // Tekrar okuma durumu (ToDo:bunu bir tuşa bağla)
 
     var ttsCompleted by remember { mutableStateOf(false) } // TTS okuma tamamlandı mı?
+
+    // USB'den gelen veriyi dinleme
+    val usbData by usbViewModel.usbData.collectAsState()
 
     LaunchedEffect(Unit) {
         val optionsText = question.options.joinToString(", ")
@@ -101,6 +108,7 @@ fun QuestionWithTTSScreen(question: Question,
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
+                    enabled = !showResult
                 ) {
                     Text(
                         text = option,
@@ -108,6 +116,35 @@ fun QuestionWithTTSScreen(question: Question,
                         color = Color.White
                     )
                 }
+                usbData?.let {
+                    Text("Gelen Veri: $it")
+                    Log.d("USB Data Received", it.toString())
+                }
+            }
+
+            LaunchedEffect(usbData) {
+                Log.d("USB Data Received options", usbData.toString())
+                usbData?.let {
+                    when (it) {
+                        "a" -> {
+                            selectedOptionIndex = 0 // İlk seçeneği seç
+                            showResult = true
+                        }
+                        "b" -> {
+                            selectedOptionIndex = 1 // İkinci seçeneği seç
+                            showResult = true
+                        }
+                        "c" -> {
+                            selectedOptionIndex = 2 // Üçüncü seçeneği seç
+                            showResult = true
+                        }
+                        "d" -> {
+                            selectedOptionIndex = 3 // Dördüncü seçeneği seç
+                            showResult = true
+                        }
+                    }
+                }
+
             }
 
             if (isRetrying) {
@@ -124,12 +161,15 @@ fun QuestionWithTTSScreen(question: Question,
                 Log.d("Scores", "${totalAnswers}:${correctAnswers}")
 
                 selectedOptionIndex?.let {
+                    usbViewModel.clearUsbData()
                     onNextQuestion(it)
+                    showResult = false
                 }
-                showResult = false
+
             }
 
         } ?: CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+
         // Progress Bar
         Spacer(modifier = Modifier.height(24.dp))
         ProgressBarTTS(correctAnswers = correctAnswers, totalAnswers = totalAnswers)
@@ -163,5 +203,12 @@ fun ProgressBarTTS(correctAnswers: Int, totalAnswers: Int) {
                 .weight(incorrectProgress.coerceAtLeast(0.01f))
                 .background(Color.Red)
         )
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(20.dp)
+    ){
+        Text("${100*(correctAnswers / totalAnswers.toFloat())} %", textAlign = TextAlign.Center)
     }
 }
