@@ -19,6 +19,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.profplay.knowledgebox.viewModel.LoginViewModel
+import androidx.compose.foundation.Image
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
+import com.profplay.knowledgebox.R
 
 @Composable
 fun LoginScreen(onLoginSuccess: ()->Unit){
@@ -34,6 +38,15 @@ fun LoginScreen(onLoginSuccess: ()->Unit){
         Column (
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // İkonu görüntüle
+            Image(
+                painter = painterResource(id = R.mipmap.ic_launcher_foreground), // İkonunuzun adını buraya girin
+                contentDescription = "Uygulama İkonu",
+                modifier = Modifier.height(100.dp)
+
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
             TextField(username.value,
                 placeholder = {
                     Text("Email gir")
