@@ -1,24 +1,16 @@
 package com.profplay.knowledgebox.view
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,8 +23,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.profplay.knowledgebox.screen.CityDetailsScreen
 import com.profplay.knowledgebox.screen.KnowledgePoolScreen
 import com.profplay.knowledgebox.screen.MainScreen
@@ -49,13 +39,15 @@ import com.profplay.knowledgebox.viewModel.QuestionViewModel
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Build
 import android.util.Log
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.profplay.knowledgebox.screen.ProfileScreen
@@ -69,6 +61,7 @@ import com.profplay.knowledgebox.screen.HowToPlayScreen
 import com.profplay.knowledgebox.screen.ProfileDetailScreen
 import com.profplay.knowledgebox.viewModel.ProfileViewModel
 
+
 class MainActivity : ComponentActivity() {
     private val REQUEST_CODE_RECORD_AUDIO = 1
     internal lateinit var myAuth: FirebaseAuth
@@ -80,10 +73,9 @@ class MainActivity : ComponentActivity() {
     private val profileViewModel: ProfileViewModel by viewModels<ProfileViewModel> ()
     private lateinit var usbReceiver: BroadcastReceiver
 
-    @SuppressLint("CoroutineCreationDuringComposition", "UnspecifiedRegisterReceiverFlag")
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
             val context = LocalContext.current
@@ -94,7 +86,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                     ) { innerPadding ->
                     Box(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding).systemBarsPadding().navigationBarsPadding()
                     ){
                         NavHost(navController= navController, startDestination = "main_screen") {
                             composable("main_screen"){
@@ -269,6 +261,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
         checkAudioPermission() // Mikrofon izni kontrolü
 
         usbReceiver = UsbManagerHelper.createUsbReceiver { granted ->

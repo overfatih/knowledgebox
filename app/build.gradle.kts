@@ -51,7 +51,7 @@ android {
     }
 }
 
-val nav_version = "2.8.4"
+val nav_version = "2.8.9"
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -64,7 +64,6 @@ dependencies {
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
@@ -83,11 +82,13 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("io.coil-kt:coil-compose:2.0.0")
     //usb serial
     implementation ("com.github.mik3y:usb-serial-for-android:3.8.1")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    //test
+    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.7.8")
 }

@@ -1,14 +1,16 @@
 package com.profplay.knowledgebox.view
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,12 +29,11 @@ internal lateinit var myAuth: FirebaseAuth
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
             KnowledgeBoxTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)
+                    Box(modifier = Modifier.padding(innerPadding).systemBarsPadding().navigationBarsPadding()
                     ){
                         NavHost(navController= navController, startDestination = "login_screen") {
                             composable("login_screen"){
@@ -45,6 +46,7 @@ class LoginActivity : ComponentActivity() {
                 }
             }
         }
+
         myAuth = Firebase.auth
         myAuth.currentUser?.let {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
