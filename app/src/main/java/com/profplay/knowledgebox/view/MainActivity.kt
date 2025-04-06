@@ -65,6 +65,8 @@ import com.profplay.knowledgebox.screen.UsbScreen
 import com.profplay.knowledgebox.util.UsbViewModelFactory
 import com.profplay.knowledgebox.viewModel.UsbViewModel
 import com.profplay.knowledgebox.helper.controldevices.UsbManagerHelper
+import com.profplay.knowledgebox.screen.HowToPlayScreen
+import com.profplay.knowledgebox.screen.ProfileDetailScreen
 import com.profplay.knowledgebox.viewModel.ProfileViewModel
 
 class MainActivity : ComponentActivity() {
@@ -187,6 +189,14 @@ class MainActivity : ComponentActivity() {
 
                             composable("profile_screen"){
                                 ProfileScreen(profileViewModel, context, navController)
+                            }
+
+                            composable("profile_detail_screen"){
+                                ProfileDetailScreen(navController)
+                            }
+
+                            composable("how_to_play_screen"){
+                                HowToPlayScreen(navController)
                             }
 
                             composable("question_with_stt_screen"){
